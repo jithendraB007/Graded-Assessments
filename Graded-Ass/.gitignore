@@ -1,0 +1,19 @@
+# Environment — never commit real API keys
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
+
+# Streamlit
+.streamlit/
+
+# Output files (generated papers)
+sample_data/output_*.docx
+
+# OS
+.DS_Store
+Thumbs.db

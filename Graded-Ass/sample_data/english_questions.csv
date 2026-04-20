@@ -1,0 +1,31 @@
+question_id,topic,subtopic,difficulty,question_type,question_text,option_a,option_b,option_c,option_d,correct_answer,marks,btl,co
+ENG001,English Grammar,Tenses,Easy,MCQ,She ___ to school every day.,go,goes,going,gone,B,1,K2,CO1
+ENG002,English Grammar,Tenses,Easy,MCQ,They ___ playing football right now.,is,are,was,were,B,1,K2,CO1
+ENG003,English Grammar,Tenses,Easy,MCQ,I ___ my homework yesterday.,do,does,did,done,C,1,K2,CO1
+ENG004,English Grammar,Tenses,Easy,MCQ,He ___ a doctor when he grows up.,will be,would be,is,was,A,1,K2,CO1
+ENG005,English Grammar,Tenses,Easy,MCQ,Look! The bird ___ in the sky.,fly,flies,is flying,flew,C,1,K2,CO1
+ENG006,English Grammar,Tenses,Easy,Short Answer,Write the past tense form of the verb 'run'.,,,,,"ran",2,K2,CO1
+ENG007,English Grammar,Tenses,Easy,Short Answer,Fill in the blank: She ___ (eat) breakfast at 8 AM every morning.,,,,,"eats",2,K2,CO1
+ENG008,English Grammar,Tenses,Easy,Short Answer,Identify the tense in this sentence: They are watching a movie.,,,,,"Present Continuous Tense",2,K2,CO1
+ENG009,English Grammar,Tenses,Easy,Long Answer,"Explain the Simple Present Tense. State its uses and write five example sentences of your own.",,,,,See model answer,5,K5,CO1
+ENG010,English Grammar,Tenses,Easy,Long Answer,"What is the Present Continuous Tense? Explain when it is used and give four examples showing different uses.",,,,,See model answer,5,K5,CO1
+ENG011,English Grammar,Tenses,Medium,MCQ,By the time he arrived she ___ already left.,has,have,had,will have,C,1,K2,CO2
+ENG012,English Grammar,Tenses,Medium,MCQ,___ you ever visited London?,Did,Have,Had,Do,B,1,K2,CO2
+ENG013,English Grammar,Tenses,Medium,MCQ,She ___ for three hours when the power went out.,has been studying,had been studying,was studying,studied,B,1,K2,CO2
+ENG014,English Grammar,Tenses,Medium,MCQ,The report ___ by the manager before the meeting started.,submitted,was submitted,had been submitted,has been submitted,C,1,K2,CO2
+ENG015,English Grammar,Tenses,Medium,MCQ,By next year I ___ in this company for a decade.,will work,will be working,will have been working,would have worked,C,1,K2,CO2
+ENG016,English Grammar,Tenses,Medium,Short Answer,"Rewrite this sentence in the Past Perfect Tense: She eats an apple.",,,,,"She had eaten an apple.",3,K3,CO2
+ENG017,English Grammar,Tenses,Medium,Short Answer,"Identify and name the tense: The students have been waiting for the teacher since 9 AM.",,,,,"Present Perfect Continuous Tense",3,K3,CO2
+ENG018,English Grammar,Tenses,Medium,Short Answer,"Correct the tense error in this sentence: Yesterday, she has gone to the market.",,,,,"Yesterday, she went to the market.",3,K3,CO2
+ENG019,English Grammar,Tenses,Medium,Long Answer,"Compare the Present Perfect Tense and the Simple Past Tense. Explain the key differences and provide three example sentences for each.",,,,,See model answer,8,K6,CO2
+ENG020,English Grammar,Tenses,Medium,Long Answer,"Explain the Past Continuous Tense and the Past Perfect Continuous Tense. Write two sentences of your own to illustrate each tense.",,,,,See model answer,8,K6,CO2
+ENG021,English Grammar,Tenses,Hard,MCQ,"Which sentence is grammatically correct?",She has went to the market.,She had went to the market.,She has gone to the market.,She have gone to the market.,C,2,K3,CO3
+ENG022,English Grammar,Tenses,Hard,MCQ,"Choose the sentence that correctly uses the Future Perfect Continuous Tense.",She will been working for six hours.,She will have been working for six hours.,She would been working for six hours.,She has been working for six hours.,B,2,K3,CO3
+ENG023,English Grammar,Tenses,Hard,MCQ,"The passive voice of 'They will have completed the project' is ___.",The project will be completed by them.,The project will have been completed by them.,The project is completed by them.,The project has been completed by them.,B,2,K3,CO3
+ENG024,English Grammar,Tenses,Hard,MCQ,"Identify the error: 'He is knowing the answer since childhood.'",He is → He has been,knowing → knows,since → for,No error,B,2,K3,CO3
+ENG025,English Grammar,Tenses,Hard,MCQ,"She ___ the novel three times before the exam, so she was well prepared.",has read,had read,was reading,reads,B,2,K4,CO3
+ENG026,English Grammar,Tenses,Hard,Short Answer,"Transform this sentence into the Future Perfect Tense: She submits the report.",,,,,"She will have submitted the report.",4,K4,CO3
+ENG027,English Grammar,Tenses,Hard,Short Answer,"Explain the difference between 'I have lived here for five years' and 'I lived here for five years'. When would you use each?",,,,,"Present Perfect indicates still living there; Simple Past indicates no longer living there.",4,K4,CO3
+ENG028,English Grammar,Tenses,Hard,Short Answer,"Rewrite using the correct tense: 'When I reached the station, the train already left.'",,,,,"When I reached the station, the train had already left.",4,K4,CO3
+ENG029,English Grammar,Tenses,Hard,Long Answer,"Discuss all twelve tenses in English. For each tense, state its form, its primary use, and give one original example sentence.",,,,,See model answer,10,K6,CO3
+ENG030,English Grammar,Tenses,Hard,Long Answer,"Analyse the use of tenses in the following paragraph and explain why each tense was chosen by the writer: 'By the time the detectives arrived, the thief had vanished. He had been hiding in the building for weeks, but he knew they were closing in.'",,,,,See model answer,10,K6,CO3
