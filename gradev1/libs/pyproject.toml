@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "edu-graded-assessment"
+version = "0.1.0"
+description = "Graded Assessment Word document generation library"
+requires-python = ">=3.11"
+dependencies = [
+  "docxtpl>=0.18",
+  "python-docx>=1.1",
+  "pydantic>=2.9.0",
+]
+
+[tool.uv]
+package = true
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[dependency-groups]
+dev = ["pytest>=8.3.0", "ruff>=0.8.0"]
