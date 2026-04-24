@@ -2,152 +2,100 @@
 name: cdu-assessment-doc
 description: "Use this skill whenever a Graded Assessment Word document needs to
   be generated in CDU (Chaitanya Deemed University) format. Trigger when the user
-  mentions Chaitanya university, CDU, or requests a multi-set question paper with
-  Set A, Set B, and Set C variants — each containing Section A (10 short questions,
-  answer any 6) and Section B (4 long-answer questions with OR alternates, answer
-  any 2). CDU papers use a 2-column table layout with no CO or BTL columns. Do NOT
-  trigger for other university formats."
+  mentions Chaitanya university, CDU, or requests a multi-set paper with Set A,
+  Set B, and Set C variants. Each set has Section A with ten short questions where
+  students answer any six, and Section B with long-answer question pairs separated
+  by OR where students answer any two. CDU papers use a two-column layout with no
+  CO or BTL columns. Do NOT trigger for other university formats."
 license: Proprietary. LICENSE.txt has complete terms.
 ---
 
 # CDU Graded Assessment Skill
 
-Generates a `.docx` Graded Assessment document in Chaitanya Deemed University format —
-a multi-set paper (Set A / Set B / Set C) where each set uses a 2-column table
-(Q.No | Question) with Section A and Section B, and no CO or BTL columns.
+This skill generates a Graded Assessment Word document in Chaitanya Deemed
+University format. It uses the university template from `assets/templates/CDU.docx`
+as the base and inserts the university logo from `assets/logos/cdu.png` at the
+top of the document.
 
 ---
 
-## Core Workflow
+## How the Document is Generated
 
-1. **Collect inputs** — gather university name, course info, time, max marks, and
-   all 3 sets. Each set needs: a label (Set-A / Set-B / Set-C), 10 Section A
-   questions, and Section B question pairs (with OR).
+The generation follows these steps:
 
-2. **Validate question structure** — each set must have exactly 10 Section A
-   questions and pairs in Section B. Section B instruction is fixed as
-   "Answer the following Questions." Section A instruction is "Answer any six Questions."
+First, the CDU template file is opened from `assets/templates/CDU.docx`. This
+preserves the university's page layout, margins, and fonts. The template content
+is cleared so new questions can be written in cleanly.
 
-3. **Generate the document** — call `CduAssessmentRequest` → `GradedAssessmentService().generate()`.
-   The renderer builds one 2-column table per set, separated by page breaks:
-   set header → time/marks row → Section A → Section B with OR rows.
+Next, the university logo is placed at the top of the page, centred, using the
+image file at `assets/logos/cdu.png`.
 
-4. **Verify output** — open or render the `.docx` to confirm:
-   - Each set starts on a new page
-   - Set header (label + university name) spans both columns and is centred/bold
-   - Time and Max Marks appear in separate left/right cells on the same row
-   - "Section - A" and "Section - B" labels span both columns and are bold
-   - "(OR)" rows span both columns and are centred between question pairs
-   - All 3 sets present (Set-A, Set-B, Set-C)
+The document is then built as three back-to-back question sets — Set A, Set B,
+and Set C — each starting on a new page. Every set is rendered as a single
+two-column table. The first column carries the question number and the second
+column carries the question text.
 
-5. **Return the result** — provide the output file path from `GradedAssessmentResult.output_path`.
+Each set begins with a merged full-width header row showing the set label,
+the university name, and the course information. Below that, the time and
+maximum marks appear on a split row — time on the left and marks on the right.
 
----
+Section A follows with its instruction "Answer any six Questions" in a merged
+row, and then ten numbered short questions.
 
-## Document Layout (per set)
+Section B follows with its instruction "Answer the following Questions" in a
+merged row, and then the question pairs. Between every pair, a full-width merged
+OR row separates the two options.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│           Set - A                                            │
-│      CHAITANYA (DEEMED TO BE UNIVERSITY)                     │
-│       B.Tech – CSE – English                                 │
-├─────────────────────────────────┬────────────────────────────┤
-│ Time: 1½ Hrs]                   │       [Max. Marks: 50      │
-├──────────────────────────────────────────────────────────────┤
-│                    Section - A                               │
-├──────────────────────────────────────────────────────────────┤
-│             Answer any six Questions.                        │
-├──────────┬───────────────────────────────────────────────────┤
-│ 1.       │ The sentences given below are in a jumbled order …│
-│ 2.       │ Write one sentence using future perfect tense …   │
-│ 3.       │ Rearrange the following jumbled words …           │
-│ …        │ …  (10 questions total)                           │
-├──────────────────────────────────────────────────────────────┤
-│                    Section - B                               │
-├──────────────────────────────────────────────────────────────┤
-│              Answer the following Questions.                 │
-├──────────┬───────────────────────────────────────────────────┤
-│ 11       │ Write a report for a history journal …            │
-├──────────────────────────────────────────────────────────────┤
-│                          OR                                  │
-├──────────┬───────────────────────────────────────────────────┤
-│ 12       │ Write a Question-Answer dialogue …                │
-│ 13       │ Write a short historical report …                 │
-├──────────────────────────────────────────────────────────────┤
-│                          OR                                  │
-├──────────┬───────────────────────────────────────────────────┤
-│ 14       │ Write a Question-Answer dialogue …                │
-└──────────┴───────────────────────────────────────────────────┘
-```
-
-Three identical-structure tables follow (Set-A, Set-B, Set-C), each on its own page,
-with different question content.
+The finished document is saved to `artifacts/graded-assessments/` and the file
+path is returned.
 
 ---
 
-## Input Shape
+## Template and Logo
 
-```python
-CduAssessmentRequest(
-    university_id   = "cdu",          # fixed — selects CDU renderer
-    university_name = "CHAITANYA (DEEMED TO BE UNIVERSITY)",
-    course_info     = "B.Tech – CSE – English",
-    time            = "1½ Hrs",
-    max_marks       = 50,
-    sets = [
-        CduSet(
-            label = "Set - A",
-            section_a = CduSectionA(
-                instruction = "Answer any six Questions.",
-                questions   = [
-                    CduQuestion(number="1.",  text="The sentences given below are in a jumbled order …"),
-                    CduQuestion(number="2.",  text="Write one sentence using future perfect tense …"),
-                    CduQuestion(number="3.",  text="Rearrange the following jumbled words …"),
-                    CduQuestion(number="4.",  text="Choose the correct option from the brackets …"),
-                    CduQuestion(number="5.",  text="Each of the following sentences contains an error …"),
-                    CduQuestion(number="6.",  text="Fill in the blank with the most appropriate …"),
-                    CduQuestion(number="7.",  text="Fill in the blank with the most appropriate …"),
-                    CduQuestion(number="8.",  text="Rewrite the sentence using future perfect …"),
-                    CduQuestion(number="9.",  text="Choose the correct option to complete …"),
-                    CduQuestion(number="10.", text="Choose the correct option from the brackets …"),
-                ],
-            ),
-            section_b = CduSectionB(
-                instruction     = "Answer the following Questions.",
-                question_pairs  = [
-                    CduQuestionPair(
-                        a = CduQuestion(number="11", text="Write a report for a history journal …"),
-                        b = CduQuestion(number="12", text="Write a Question-Answer dialogue …"),
-                    ),
-                    CduQuestionPair(
-                        a = CduQuestion(number="13", text="Write a short historical report …"),
-                        b = CduQuestion(number="14", text="Write a Question-Answer dialogue …"),
-                    ),
-                ],
-            ),
-        ),
-        # Set-B and Set-C follow the same structure with different questions
-    ],
-)
-```
+Template file : `assets/templates/CDU.docx`
+Logo file     : `assets/logos/cdu.png`
+
+If the logo file is not present the document is still generated without a logo.
+To add or update the logo, place a PNG image named `cdu.png` inside the
+`assets/logos/` folder before running the skill.
 
 ---
 
-## Output
+## Document Structure
 
-- File saved to: `artifacts/graded-assessments/cdu-assessment-{uid}.docx`
-- Returns: `GradedAssessmentResult(output_path=..., university_id="cdu")`
-- Open in Microsoft Word or LibreOffice to review before sharing
+Each set follows the same layout. Section A contains ten short grammar and writing
+questions. Students choose any six to answer. There are no mark allocations per
+question and no Course Outcome or BTL columns.
+
+Section B contains question pairs where each pair offers two long-answer options
+separated by OR. Students answer any two questions from Section B in total.
+Questions carry mark values stated in the exam instructions.
+
+All three sets — A, B, and C — contain different questions on the same topics,
+so each student in the exam hall receives a different variant.
 
 ---
 
-## Validation Checklist
+## What Information to Collect
 
-- [ ] Document contains exactly 3 sets (Set-A, Set-B, Set-C)
-- [ ] Each set starts on its own page
-- [ ] Set header spans both columns and is centred and bold
-- [ ] Time appears left-aligned; Max Marks appears right-aligned in the same row
-- [ ] "Section - A" and "Section - B" labels span both columns
-- [ ] Each set has exactly 10 Section A questions
-- [ ] Section B OR rows span both columns and are centred
-- [ ] No CO or BTL columns present anywhere in the document
+Before generating the document, the following information must be gathered from
+the user:
+
+The university name, the course information line, the time allowed, and the
+maximum marks.
+
+For each of the three sets — Set A, Set B, and Set C — a list of ten Section A
+questions, each with a question number and the question text.
+
+For each set, a list of Section B question pairs where each pair has an (a)
+question and a (b) question, each with a number and question text.
+
+---
+
+## After Generation
+
+Open the file from `artifacts/graded-assessments/` in Microsoft Word or LibreOffice
+to review the layout. Confirm that all three sets are present, that each set starts
+on a new page, that Section A has ten questions and Section B has pairs with OR
+rows between them, and that no CO or BTL columns appear anywhere.

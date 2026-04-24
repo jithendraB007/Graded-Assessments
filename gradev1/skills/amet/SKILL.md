@@ -3,153 +3,114 @@ name: amet-assessment-doc
 description: "Use this skill whenever a Graded Assessment Word document needs to
   be generated in AMET (Academy of Maritime Education and Training) university format.
   Trigger when the user mentions AMET, maritime university assessment, or requests
-  a question paper with Part A (MCQ), Part B (long answer with OR options), and
-  Part C (case study). Also trigger when the user provides course details like
-  Programme & Batch, Course Code, BTL levels (K1–K6), and CO mappings (CO1–CO5)
-  for an AMET paper. Do NOT trigger for other university formats."
+  a three-part question paper with Part A for multiple choice, Part B for long
+  answer with OR options, and Part C for a case study. Also trigger when the user
+  provides details such as Programme and Batch, Course Code, BTL levels, and CO
+  mappings. Do NOT trigger for other university formats."
 license: Proprietary. LICENSE.txt has complete terms.
 ---
 
 # AMET Graded Assessment Skill
 
-Generates a `.docx` Graded Assessment document in AMET university format — a 3-part
-question paper with a 5-column table (Question No | Question | Mark | BTL | CO).
+This skill generates a Graded Assessment Word document in AMET university format.
+It uses the university template from `assets/templates/AMET.docx` as the base and
+inserts the university logo from `assets/logos/amet.png` at the top of the document.
 
 ---
 
-## Core Workflow
+## How the Document is Generated
 
-1. **Collect inputs** — gather all required fields: exam type, programme, semester,
-   course name, course code, duration, max marks, instructions, and all questions
-   with their BTL and CO values.
+The generation follows these steps:
 
-2. **Validate question structure** — ensure Part A questions have individual marks,
-   Part B has paired OR questions (21a/21b … 25a/25b), and Part C has exactly one
-   case study question. Total marks must equal `max_marks`.
+First, the AMET template file is opened from `assets/templates/AMET.docx`. This
+preserves the university's page layout, margins, and fonts. The template content
+is cleared so new questions can be written in cleanly.
 
-3. **Generate the document** — call `AmetAssessmentRequest` → `GradedAssessmentService().generate()`.
-   The renderer builds: header block → instructions → 5-column table with Part A / Part B (with OR rows) / Part C.
+Next, the university logo is placed at the top of the page, centred, using the
+image file at `assets/logos/amet.png`.
 
-4. **Verify output** — open or render the `.docx` to confirm:
-   - Header lines are right-aligned with correct spacing
-   - Table has 5 columns throughout (Question No, Question, Mark, BTL, CO)
-   - Part A rows are individual, Part B rows come in a/b pairs separated by centred "(OR)" rows
-   - Part C is a single merged row followed by one question row
-   - Total marks in headers match the sum of individual question marks
+The header block is then written with the exam type on the first line, followed
+by the programme and semester details, the course name and course code, and finally
+the duration and maximum marks — all matching the AMET house style.
 
-5. **Return the result** — provide the output file path from `GradedAssessmentResult.output_path`.
+A numbered list of exam instructions follows the header.
 
----
+The questions are laid out in a five-column table with the headings Question No,
+Question, Mark, BTL, and CO. The table is divided into three clearly labelled
+sections — Part A, Part B, and Part C — each introduced by a full-width merged
+header row showing the marks formula and the attempt instruction.
 
-## Document Layout
+In Part A, each question occupies one row. In Part B, every question pair is
+separated by a centred OR row so students can choose between option (a) and
+option (b). Part C contains a single case study question worth ten marks.
 
-```
-MODEL EXAMINATIONS – APRIL 2026
-Programme & Batch: B.Tech SE/CSE          Semester: II
-Course Name: Communicative English        Course Code: 256EN1A22TD
-Duration: 3 hours                         Maximum Marks: 100 marks
-
-Instructions:
-  1. Before attempting any question paper, ensure you have received the correct paper.
-  2. The missing data, if any, may be assumed suitably.
-
-┌────────────┬──────────────────────────────────────┬──────┬─────┬─────┐
-│ Question No│ Question                             │ Mark │ BTL │ CO  │
-├────────────┴──────────────────────────────────────┴──────┴─────┴─────┤
-│       PART A (20×1 = 20 Marks)  Answer all the questions             │
-├────────────┬──────────────────────────────────────┬──────┬─────┬─────┤
-│ 1          │ Choose the correct option …          │  1   │ K2  │ CO1 │
-│ 2          │ Identify the word similar in …       │  1   │ K2  │ CO1 │
-│  …                                                                    │
-├────────────┴──────────────────────────────────────┴──────┴─────┴─────┤
-│       PART B (5×14 = 70 Marks)  Answer all the questions             │
-├────────────┬──────────────────────────────────────┬──────┬─────┬─────┤
-│ 21 (a)     │ Write a paragraph of 200 words …     │ 14   │ K6  │ CO1 │
-│            │                (OR)                  │      │     │     │
-│ 21 (b)     │ Write a paragraph about …            │ 14   │ K6  │ CO1 │
-│  …                                                                    │
-├────────────┴──────────────────────────────────────┴──────┴─────┴─────┤
-│       PART C (1×10 = 10 Marks)  Answer the Question                  │
-├────────────┬──────────────────────────────────────┬──────┬─────┬─────┤
-│ 26         │ Read the case study and answer …     │ 10   │K3-K5│ CO5 │
-└────────────┴──────────────────────────────────────┴──────┴─────┴─────┘
-```
+The finished document is saved to `artifacts/graded-assessments/` and the file
+path is returned.
 
 ---
 
-## BTL Levels
+## Template and Logo
 
-| Code | Bloom's Level |
-|------|--------------|
-| K1   | Remember     |
-| K2   | Understand   |
-| K3   | Apply        |
-| K4   | Analyse      |
-| K5   | Evaluate     |
-| K6   | Create       |
+Template file : `assets/templates/AMET.docx`
+Logo file     : `assets/logos/amet.png`
+
+If the logo file is not present the document is still generated without a logo.
+To add or update the logo, place a PNG image named `amet.png` inside the
+`assets/logos/` folder before running the skill.
 
 ---
 
-## Input Shape
+## Document Structure
 
-```python
-AmetAssessmentRequest(
-    university_id = "amet",          # fixed — selects AMET renderer
-    exam_type     = "MODEL EXAMINATIONS – APRIL 2026",
-    programme     = "B.Tech SE/CSE",
-    semester      = "II",
-    course_name   = "Communicative English Advanced",
-    course_code   = "256EN1A22TD",
-    duration      = "3 hours",
-    max_marks     = 100,
-    instructions  = [
-        "Before attempting any question paper, ensure that you have received the correct paper.",
-        "The missing data, if any, may be assumed suitably.",
-    ],
-    part_a = AmetPartA(
-        total       = "20×1 = 20 Marks",
-        instruction = "Answer all the questions",
-        questions   = [
-            AmetQuestion(number="1", text="Choose the correct option …", mark=1, btl="K2", co="CO1"),
-            # … 20 questions total
-        ],
-    ),
-    part_b = AmetPartB(
-        total           = "5×14 = 70 Marks",
-        instruction     = "Answer all the questions",
-        question_pairs  = [
-            AmetQuestionPair(
-                a = AmetQuestion(number="21 (a)", text="Write a paragraph …", mark=14, btl="K6", co="CO1"),
-                b = AmetQuestion(number="21 (b)", text="Write an essay …",   mark=14, btl="K6", co="CO1"),
-            ),
-            # … 5 pairs total (21–25)
-        ],
-    ),
-    part_c = AmetPartC(
-        total       = "1×10 = 10 Marks",
-        instruction = "Answer the Question",
-        question    = AmetQuestion(number="26", text="Read the case study …", mark=10, btl="K3-K5", co="CO5"),
-    ),
-)
-```
+The document has three parts inside one continuous question table.
+
+Part A carries twenty marks from twenty short questions worth one mark each.
+Each question is tagged with a BTL level (K1 through K6) and a Course Outcome
+(CO1 through CO5).
+
+Part B carries seventy marks from five question pairs worth fourteen marks each.
+Each pair presents an (a) option and a (b) option separated by an OR row. Students
+attempt all five pairs, choosing one option from each pair.
+
+Part C carries ten marks from one case study question. The case study is a
+multi-part scenario with sub-questions carrying four, three, and three marks.
 
 ---
 
-## Output
+## What Information to Collect
 
-- File saved to: `artifacts/graded-assessments/amet-assessment-{uid}.docx`
-- Returns: `GradedAssessmentResult(output_path=..., university_id="amet")`
-- Open in Microsoft Word or LibreOffice to review before sharing
+Before generating the document, the following information must be gathered from
+the user:
+
+The exam type and month such as "MODEL EXAMINATIONS – APRIL 2026".
+
+The programme name and batch such as "B.Tech SE/CSE" and the semester number.
+
+The course name and its alphanumeric course code.
+
+The exam duration in hours and the maximum marks, which is typically 100.
+
+Up to four exam instructions that appear as numbered rules below the header.
+
+For Part A, twenty questions each with their text, mark value, BTL level, and CO.
+
+For Part B, five question pairs where each pair has an (a) option and a (b) option,
+both with their text, fourteen marks, BTL level, and CO.
+
+For Part C, one case study question with sub-questions totalling ten marks.
 
 ---
 
-## Validation Checklist
+## BTL Reference
 
-- [ ] Header: all 4 lines present (exam type, programme/semester, course/code, duration/marks)
-- [ ] Instructions numbered correctly
-- [ ] Table has exactly 5 columns throughout
-- [ ] Part A: individual question rows, no OR separators
-- [ ] Part B: each pair has an "(OR)" row centred between `a` and `b`
-- [ ] Part C: single merged section header + one question row
-- [ ] Sum of all marks = `max_marks`
-- [ ] All BTL values are K1–K6; all CO values are CO1–CO5
+K1 is Remember. K2 is Understand. K3 is Apply. K4 is Analyse. K5 is Evaluate.
+K6 is Create.
+
+---
+
+## After Generation
+
+Open the file from `artifacts/graded-assessments/` in Microsoft Word or LibreOffice
+to review the layout. Confirm that all three parts are present, that OR rows appear
+correctly in Part B, and that the total of all question marks equals the maximum marks
+stated in the header.

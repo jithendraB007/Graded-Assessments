@@ -4,9 +4,9 @@ from io import BytesIO
 
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.oxml.ns import qn
-from docx.shared import Pt, RGBColor
+from docx.shared import Pt
 
+from graded_assessment.application.renderers._base import insert_logo, open_template, set_table_borders
 from graded_assessment.domain.amet_types import AmetAssessmentRequest
 
 
@@ -41,7 +41,8 @@ def _merge_row(table, row_idx: int, text: str, bold: bool = True) -> None:
 
 
 def render(request: AmetAssessmentRequest) -> bytes:
-    doc = Document()
+    doc = open_template("AMET")
+    insert_logo(doc, "amet")
 
     # ── Header ──────────────────────────────────────────────────
     _bold_center(doc, request.exam_type, size=13)
@@ -62,14 +63,14 @@ def render(request: AmetAssessmentRequest) -> bytes:
     # ── Instructions ────────────────────────────────────────────
     p = doc.add_paragraph()
     p.add_run("Instructions:").bold = True
-    for instr in request.instructions:
-        doc.add_paragraph(instr, style="List Number")
+    for i, instr in enumerate(request.instructions, start=1):
+        doc.add_paragraph(f"{i}. {instr}")
 
     doc.add_paragraph()
 
     # ── Question table ──────────────────────────────────────────
     table = doc.add_table(rows=1, cols=5)
-    table.style = "Table Grid"
+    set_table_borders(table)
     hdr = table.rows[0].cells
     for i, h in enumerate(["Question No", "Question", "Mark", "BTL", "CO"]):
         hdr[i].text = h

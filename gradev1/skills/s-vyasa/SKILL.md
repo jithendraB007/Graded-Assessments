@@ -2,157 +2,113 @@
 name: s-vyasa-assessment-doc
 description: "Use this skill whenever a Graded Assessment Word document needs to
   be generated in S-VYASA (Swami Vivekananda Yoga Anusandhana Samsthana) university
-  format. Trigger when the user mentions S-VYASA, SVYASA, or requests a 2-part
-  paper with Part A (10 questions × 3 marks = 30) and Part B (5 question pairs
-  × 14 marks = 70) using a 5-column table (Q.No | Questions | CO | RBTL | Marks)
-  with a USN (University Seat Number) header row and a structured header table
-  containing month/year, program, semester, and course details. Do NOT trigger
-  for other university formats."
+  format. Trigger when the user mentions S-VYASA, SVYASA, or requests a two-part
+  paper with Part A carrying ten questions worth three marks each totalling thirty
+  marks, and Part B carrying five question pairs worth fourteen marks each totalling
+  seventy marks. The document has a University Seat Number row at the top and a
+  four-column header metadata table. Questions use a five-column table with columns
+  for Q.No, Questions, CO, RBTL, and Marks. Do NOT trigger for other university formats."
 license: Proprietary. LICENSE.txt has complete terms.
 ---
 
 # S-VYASA Graded Assessment Skill
 
-Generates a `.docx` Graded Assessment document in S-VYASA university format —
-a 2-part paper with a USN row, a 4-column header metadata table, and 5-column
-question tables (Q.No | Questions | CO | RBTL | Marks) for both parts.
+This skill generates a Graded Assessment Word document in S-VYASA university format.
+It uses the university template from `assets/templates/S-Vyasa.docx` as the base
+and inserts the university logo from `assets/logos/s-vyasa.png` at the top of
+the document.
 
 ---
 
-## Core Workflow
+## How the Document is Generated
 
-1. **Collect inputs** — gather month/year, academic year, program, specialization,
-   semester, date of exam, course code, course name, all Part A questions (with CO
-   and RBTL), and all Part B question pairs (each pair has an `a` and `b` question).
+The generation follows these steps:
 
-2. **Validate question structure** — Part A must have exactly 10 questions, each
-   worth 3 marks (total 30). Part B must have exactly 5 question pairs, each worth
-   14 marks (total 70). All questions need CO and RBTL values.
+First, the S-VYASA template file is opened from `assets/templates/S-Vyasa.docx`.
+This preserves the university's page layout, margins, and fonts. The template
+content is cleared so new questions can be written in cleanly.
 
-3. **Generate the document** — call `SvyasaAssessmentRequest` → `GradedAssessmentService().generate()`.
-   The renderer builds: USN table → header metadata table → Part A section header +
-   5-column table → Part B section header + 5-column table with OR rows between pairs.
+Next, the university logo is placed at the top of the page, centred, using the
+image file at `assets/logos/s-vyasa.png`.
 
-4. **Verify output** — open or render the `.docx` to confirm:
-   - USN table appears first with 11 empty cells after the "USN" label
-   - Header metadata table has 4 columns and 5 rows (month/year, program, semester, course code, course name)
-   - "Part – A" and "Part - B" headings are centred and bold
-   - Part A/B description lines show the correct formula (e.g. "10 Q x 3 M = 30")
-   - Part B question pairs are separated by centred "(OR)" rows that span all 5 columns
-   - CO and RBTL columns filled for every question row
+A University Seat Number row is written first — a table with one label cell on
+the left and eleven empty cells to the right where students write their seat number.
 
-5. **Return the result** — provide the output file path from `GradedAssessmentResult.output_path`.
+Below that, a four-column header metadata table is written with five rows covering
+the month and year of examination, academic year, program, specialisation, semester,
+date of examination, course code, and course name.
 
----
+The Part A section follows. The heading "Part – A" is written centred and bold,
+followed by a line showing the marks formula such as "10 Q x 3 M = 30". The
+questions are laid out in a five-column table with the column headers Q.No,
+Questions, CO, RBTL, and Marks. Each of the ten questions occupies one row.
 
-## Document Layout
+The Part B section follows the same pattern. The heading "Part - B" is written
+centred and bold, followed by the marks formula such as "5 Q x 14 M = 70". The
+five question pairs are laid out in the same five-column table. Each pair has an
+(a) question row and a (b) question row, separated by a full-width merged OR row.
 
-```
-┌─────┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-│ USN │   │   │   │   │   │   │   │   │   │   │
-└─────┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
-
-┌──────────────────────────────┬────────────────┬─────────────────┬────────────┐
-│ Month & Year of Examination  │  July 2025     │  Academic year  │  2024-25   │
-│ Program                      │  B. Tech       │  Specialization │  All       │
-│ Semester                     │  1             │  Date of Exam   │            │
-│ Course Code                  │  ENGL105       │  ENGL105        │  ENGL105   │
-│ Course Name                  │  English LSRW  │  English LSRW   │ English    │
-└──────────────────────────────┴────────────────┴─────────────────┴────────────┘
-
-                          Part – A
-           Answer all the questions      10 Q x 3 M = 30
-
-┌────────┬──────────────────────────────────────────┬─────┬──────┬───────┐
-│ Q.No.  │ Questions                                │ CO  │ RBTL │ Marks │
-├────────┼──────────────────────────────────────────┼─────┼──────┼───────┤
-│ 1.     │ Choose the correct collective noun …     │  5  │  1   │   3   │
-│ 2.     │ Write two sentences using the word …     │  2  │  2   │   3   │
-│ …      │ …  (10 questions total)                  │     │      │       │
-└────────┴──────────────────────────────────────────┴─────┴──────┴───────┘
-
-                          Part - B
-           Answer all the questions       5 Q x 14 M = 70
-
-┌────────┬──────────────────────────────────────────┬─────┬──────┬───────┐
-│ Q.No.  │ Questions                                │ CO  │ RBTL │ Marks │
-├────────┼──────────────────────────────────────────┼─────┼──────┼───────┤
-│ 11a.   │ Read the passage and answer …            │  2  │  4   │  14   │
-├────────┴──────────────────────────────────────────┴─────┴──────┴───────┤
-│                              OR                                         │
-├────────┬──────────────────────────────────────────┬─────┬──────┬───────┤
-│ 11b.   │ Read the passage carefully and answer …  │  5  │  4   │  14   │
-│ …      │ …  (5 pairs total)                       │     │      │       │
-└────────┴──────────────────────────────────────────┴─────┴──────┴───────┘
-```
+The finished document is saved to `artifacts/graded-assessments/` and the file
+path is returned.
 
 ---
 
-## RBTL Levels (Revised Bloom's Taxonomy)
+## Template and Logo
 
-| Code | Level      |
-|------|-----------|
-| 1    | Remember  |
-| 2    | Understand|
-| 3    | Apply     |
-| 4    | Analyse   |
-| 5    | Evaluate  |
-| 6    | Create    |
+Template file : `assets/templates/S-Vyasa.docx`
+Logo file     : `assets/logos/s-vyasa.png`
+
+If the logo file is not present the document is still generated without a logo.
+To add or update the logo, place a PNG image named `s-vyasa.png` inside the
+`assets/logos/` folder before running the skill.
 
 ---
 
-## Input Shape
+## Document Structure
 
-```python
-SvyasaAssessmentRequest(
-    university_id = "s-vyasa",      # fixed — selects S-VYASA renderer
-    month_year    = "July 2025",
-    academic_year = "2024-25",
-    program       = "B. Tech",
-    specialization= "All",
-    semester      = "1",
-    date_of_exam  = "",
-    course_code   = "ENGL105",
-    course_name   = "English LSRW",
-    part_a = SvyasaPartA(
-        questions = [
-            SvyasaQuestion(number="1.",  text="Choose the correct collective noun …", co="5", rbtl="1", marks=3),
-            SvyasaQuestion(number="2.",  text="Write two sentences using 'impact' …", co="2", rbtl="2", marks=3),
-            # … 10 questions total
-        ],
-    ),
-    part_b = SvyasaPartB(
-        question_pairs = [
-            SvyasaQuestionPair(
-                a = SvyasaQuestion(number="11a.", text="Read the passage and answer …",         co="2", rbtl="4", marks=14),
-                b = SvyasaQuestion(number="11b.", text="Read the passage carefully and answer …",co="5", rbtl="4", marks=14),
-            ),
-            # … 5 pairs total (11–15)
-        ],
-    ),
-)
-```
+The document opens with the USN row for seat number entry, followed by the
+header metadata table that identifies the exam, course, and semester.
+
+Part A contains ten questions each worth three marks, totalling thirty marks.
+Every question carries a Course Outcome number and an RBTL level. Students
+answer all ten questions.
+
+Part B contains five question pairs each worth fourteen marks, totalling seventy
+marks. Students answer all five pairs, choosing either option (a) or option (b)
+from each pair. Each question in Part B carries a Course Outcome number and an
+RBTL level.
 
 ---
 
-## Output
+## What Information to Collect
 
-- File saved to: `artifacts/graded-assessments/s-vyasa-assessment-{uid}.docx`
-- Returns: `GradedAssessmentResult(output_path=..., university_id="s-vyasa")`
-- Open in Microsoft Word or LibreOffice to review before sharing
+Before generating the document, the following information must be gathered from
+the user:
+
+The month and year of the examination, the academic year, the program name, the
+specialisation, the semester number, the date of examination if known, the course
+code, and the course name.
+
+For Part A, ten questions each with the question number, the full question text,
+the Course Outcome number, the RBTL level, and the mark value (three for each).
+
+For Part B, five question pairs where each pair has an (a) question and a (b)
+question. Each question needs the question number, the full question text, the
+Course Outcome number, the RBTL level, and the mark value (fourteen for each).
 
 ---
 
-## Validation Checklist
+## RBTL Reference
 
-- [ ] USN row appears first with 11 empty cells
-- [ ] Header metadata table has 5 rows × 4 columns
-- [ ] "Part – A" heading centred and bold
-- [ ] Part A description line shows correct formula: `10 Q x 3 M = 30`
-- [ ] Part A table has exactly 10 question rows
-- [ ] "Part - B" heading centred and bold
-- [ ] Part B description line shows correct formula: `5 Q x 14 M = 70`
-- [ ] Part B OR rows span all 5 columns and are centred
-- [ ] Part B has exactly 5 question pairs (10 question rows + 5 OR rows)
-- [ ] CO and RBTL columns populated for every question row
-- [ ] All marks in Part A = 3; all marks in Part B = 14
+1 is Remember. 2 is Understand. 3 is Apply. 4 is Analyse. 5 is Evaluate.
+6 is Create.
+
+---
+
+## After Generation
+
+Open the file from `artifacts/graded-assessments/` in Microsoft Word or LibreOffice
+to review the layout. Confirm that the USN row is present, that the header metadata
+table has five rows, that Part A has ten question rows, and that Part B has five
+question pairs with OR rows between each pair. Check that CO and RBTL columns are
+filled for every question.

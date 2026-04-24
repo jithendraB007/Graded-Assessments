@@ -2,162 +2,117 @@
 name: anu-assessment-doc
 description: "Use this skill whenever a Graded Assessment Word document needs to
   be generated in ANU (Annamacharya University) format. Trigger when the user
-  mentions Annamacharya University, ANU mid exam, or requests a 2-part paper with
-  Part A containing sub-questions (a, b, c, d, e) each mapped to a Course Outcome
-  and Bloom's Level, and Part B containing long-answer questions with OR alternates.
-  Also trigger when the user provides a Hall Ticket Number field, batch info like
-  'II B.Tech I Semester – CSE & Allied Branches', or mentions condensed marks
-  (e.g. '30 marks condensed to 25 marks'). Do NOT trigger for other university formats."
+  mentions Annamacharya University, ANU mid exam, or requests a two-part paper
+  where Part A has five sub-questions labelled a through e under a single question
+  number, and Part B has long-answer questions with OR alternates. Also trigger
+  when the user provides details such as Hall Ticket Number fields, a batch
+  description like 'II B.Tech I Semester – CSE and Allied Branches', or a note
+  about condensed marks. Do NOT trigger for other university formats."
 license: Proprietary. LICENSE.txt has complete terms.
 ---
 
 # ANU Graded Assessment Skill
 
-Generates a `.docx` Graded Assessment document in Annamacharya University format —
-a 2-part mid-exam paper with a Hall Ticket number row, numbered notes, and a
-6-column table layout (Q.No | sub | Question | | Course Outcomes | Bloom's Level).
+This skill generates a Graded Assessment Word document in Annamacharya University
+format. It uses the university template from `assets/templates/ANU.docx` as the
+base and inserts the university logo from `assets/logos/anu.png` at the top of
+the document.
 
 ---
 
-## Core Workflow
+## How the Document is Generated
 
-1. **Collect inputs** — gather university name, batch, exam type, course name, date,
-   duration, max marks, numbered notes, Part A sub-questions (a–e with CO and
-   Bloom's level), and Part B questions with OR alternates, marks, CO, and Bloom's level.
+The generation follows these steps:
 
-2. **Validate question structure** — Part A must have exactly 5 sub-questions (a–e)
-   under a single Q.1. Part B questions should alternate between a numbered question
-   and an `(OR)` row. Marks per Part B question must be specified.
+First, the ANU template file is opened from `assets/templates/ANU.docx`. This
+preserves the university's page layout, margins, and fonts. The template content
+is cleared so new questions can be written in cleanly.
 
-3. **Generate the document** — call `AnuAssessmentRequest` → `GradedAssessmentService().generate()`.
-   The renderer builds: header block → Hall Ticket table → numbered notes →
-   Part A 6-column table → Part B 6-column table.
+Next, the university logo is placed at the top of the page, centred, using the
+image file at `assets/logos/anu.png`.
 
-4. **Verify output** — open or render the `.docx` to confirm:
-   - University name and batch are bold and centred at the top
-   - Hall Ticket table has 11 empty cells after the label
-   - Notes are numbered (1. 2. 3. 4.)
-   - Part A has Q.1 spanning the first column with sub-questions a)–e) below it
-   - Part B (OR) rows span the full row width and are centred
-   - CO and Bloom's level columns are populated for every question row
+The header block is written with the university name in large bold text centred
+on the first line, followed by the batch and semester details, the exam type,
+and the course name — all centred. The date, duration, and maximum marks appear
+on a single line below.
 
-5. **Return the result** — provide the output file path from `GradedAssessmentResult.output_path`.
+A Hall Ticket Number row follows, made up of a table with eleven empty cells
+where students write their registration number digit by digit.
 
----
+Numbered notes appear next, listing the exam rules such as the number of parts,
+marks per question, and condensed marking instructions.
 
-## Document Layout
+The Part A questions are laid out in a six-column table. The heading row spans
+the first four columns with the label PART-A, and the last two columns carry the
+headings Course Outcomes and Bloom's level. Below the heading there is an
+instruction row, then a row for Question 1, and then five sub-question rows
+labelled a through e. Each sub-question row shows the sub-label, the question
+text, the Course Outcome, and the Bloom's level.
 
-```
-        ANNAMACHARYA UNIVERSITY
-  II B.Tech I Semester – CSE & Allied Branches
-           IInd Mid Examination
-        Professional Skills for Engineers
+The Part B questions follow in a separate six-column table with the headings
+PART B, Marks, Course Outcomes, and Bloom's Level. Questions with OR alternates
+are separated by a full-width merged OR row.
 
-Date: 28-08-2025   Duration: 2Hrs   Max. Marks: 30
-
-┌──────────────────────────────────────────────────────────────────┐
-│ H.T. No:- │   │   │   │   │   │   │   │   │   │   │            │
-└──────────────────────────────────────────────────────────────────┘
-
-Note:
-  1. Question Paper consists of two parts (Part-A and Part-B)
-  2. In Part-A, each question carries one mark.
-  3. 30 marks in Part-B will be condensed to 25 marks.
-  4. Answer ALL the questions in Part-A and Part-B
-
-┌──────┬─────┬──────────────────────────────┬──────┬───────────────┬─────────────┐
-│PART-A│     │                              │      │Course Outcomes│ Bloom's     │
-│      │     │ Answer all short answer Qs   │      │               │ level       │
-├──────┼─────┼──────────────────────────────┼──────┼───────────────┼─────────────┤
-│ 1    │ a)  │ Fill in the blanks …         │      │     CO1       │     L1      │
-│      │ b)  │ Identify and correct the … │      │     CO1       │     L2      │
-│      │ c)  │ Choose the option which …    │      │     CO1       │     L2      │
-│      │ d)  │ Rearrange the jumbled …      │      │     CO1       │     L2      │
-│      │ e)  │ Convert the sentence …       │      │     CO1       │     L1      │
-└──────┴─────┴──────────────────────────────┴──────┴───────────────┴─────────────┘
-
-┌──────┬─────┬──────────────────────────────┬──────┬───────────────┬─────────────┐
-│PART B│     │                              │ Marks│Course Outcomes│ Bloom's     │
-├──────┼─────┼──────────────────────────────┼──────┼───────────────┼─────────────┤
-│ 2    │     │ Read the passage …           │      │               │             │
-│      │     │ What does LiDAR help …       │  2M  │     CO4       │     L1      │
-├──────┴─────┴──────────────────────────────┴──────┴───────────────┴─────────────┤
-│                               (OR)                                              │
-├──────┬─────┬──────────────────────────────┬──────┬───────────────┬─────────────┤
-│ 3    │     │ Rearrange the sentences …    │ 10M  │     CO1       │     L2      │
-└──────┴─────┴──────────────────────────────┴──────┴───────────────┴─────────────┘
-```
+The finished document is saved to `artifacts/graded-assessments/` and the file
+path is returned.
 
 ---
 
-## Bloom's Levels
+## Template and Logo
 
-| Code | Level      |
-|------|-----------|
-| L1   | Remember  |
-| L2   | Understand|
-| L3   | Apply     |
-| L4   | Analyse   |
-| L5   | Evaluate  |
-| L6   | Create    |
+Template file : `assets/templates/ANU.docx`
+Logo file     : `assets/logos/anu.png`
+
+If the logo file is not present the document is still generated without a logo.
+To add or update the logo, place a PNG image named `anu.png` inside the
+`assets/logos/` folder before running the skill.
 
 ---
 
-## Input Shape
+## Document Structure
 
-```python
-AnuAssessmentRequest(
-    university_id   = "anu",          # fixed — selects ANU renderer
-    university_name = "ANNAMACHARYA UNIVERSITY",
-    batch           = "II B.Tech I Semester – CSE & Allied Branches",
-    exam_type       = "IInd Mid Examination",
-    course_name     = "Professional Skills for Engineers",
-    date            = "28-08-2025",
-    duration        = "2Hrs",
-    max_marks       = 30,
-    notes = [
-        "Question Paper consists of two parts (Part-A and Part-B)",
-        "In Part-A, each question carries one mark.",
-        "30 marks in Part-B will be condensed to 25 marks.",
-        "Answer ALL the questions in Part-A and Part-B",
-    ],
-    part_a = AnuPartA(
-        sub_questions = [
-            AnuSubQuestion(sub="a)", text="Fill in the blanks …",       co="CO1", bloom="L1"),
-            AnuSubQuestion(sub="b)", text="Identify and correct …",     co="CO1", bloom="L2"),
-            AnuSubQuestion(sub="c)", text="Choose the option …",        co="CO1", bloom="L2"),
-            AnuSubQuestion(sub="d)", text="Rearrange the jumbled …",    co="CO1", bloom="L2"),
-            AnuSubQuestion(sub="e)", text="Convert the sentence …",     co="CO1", bloom="L1"),
-        ],
-    ),
-    part_b = AnuPartB(
-        questions = [
-            AnuPartBQuestion(number="2",    text="Read the passage …",  marks="",    co="",    bloom=""),
-            AnuPartBQuestion(number="",     text="What does LiDAR …",   marks="2M",  co="CO4", bloom="L1"),
-            AnuPartBQuestion(number="(OR)", text="(OR)",                marks="",    co="",    bloom=""),
-            AnuPartBQuestion(number="3",    text="Rearrange sentences", marks="10M", co="CO1", bloom="L2"),
-        ],
-    ),
-)
-```
+Part A carries five marks total from five sub-questions under Question 1. Each
+sub-question is labelled a, b, c, d, and e. Each carries one mark and is mapped
+to a Course Outcome and a Bloom's level.
+
+Part B carries the remaining marks from long-answer questions. Questions that
+have an OR alternate are paired with a full-width OR separator row so students
+can choose. Marks for each Part B question are stated in the Marks column and
+may be condensed to a lower value as stated in the notes.
 
 ---
 
-## Output
+## What Information to Collect
 
-- File saved to: `artifacts/graded-assessments/anu-assessment-{uid}.docx`
-- Returns: `GradedAssessmentResult(output_path=..., university_id="anu")`
-- Open in Microsoft Word or LibreOffice to review before sharing
+Before generating the document, the following information must be gathered from
+the user:
+
+The university name, the batch and semester description, and the exam type such
+as "IInd Mid Examination".
+
+The course name, the exam date, the duration, and the maximum marks.
+
+Up to four numbered notes that explain the exam rules.
+
+For Part A, five sub-questions each with their text, Course Outcome, and
+Bloom's level.
+
+For Part B, a list of question entries. Each entry is either a numbered question
+with its marks, Course Outcome, and Bloom's level, or an OR separator row, or a
+continuation question below a passage or set of sub-items.
 
 ---
 
-## Validation Checklist
+## Bloom's Level Reference
 
-- [ ] University name bold and centred at top
-- [ ] Hall Ticket row has 11 empty cells after the label
-- [ ] Notes are numbered 1–4
-- [ ] Part A: Q.1 spans first column; sub-questions a)–e) fill rows below
-- [ ] CO column populated for every Part A sub-question
-- [ ] Bloom's level column populated for every Part A sub-question
-- [ ] Part B (OR) rows span full width and are centred
-- [ ] Part B marks, CO, and Bloom's Level filled for every question
+L1 is Remember. L2 is Understand. L3 is Apply. L4 is Analyse. L5 is Evaluate.
+L6 is Create.
+
+---
+
+## After Generation
+
+Open the file from `artifacts/graded-assessments/` in Microsoft Word or LibreOffice
+to review the layout. Confirm that the Hall Ticket row is present, that the Part A
+table shows five sub-questions under Question 1, and that OR rows appear at the
+correct positions in Part B.

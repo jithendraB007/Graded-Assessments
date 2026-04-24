@@ -6,21 +6,23 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt
 
+from graded_assessment.application.renderers._base import insert_logo, open_template, set_table_borders
 from graded_assessment.domain.svyasa_types import SvyasaAssessmentRequest
 
 
 def render(request: SvyasaAssessmentRequest) -> bytes:
-    doc = Document()
+    doc = open_template("S-Vyasa")
+    insert_logo(doc, "s-vyasa")
 
     # ── USN row ──────────────────────────────────────────────────
     usn_table = doc.add_table(rows=1, cols=12)
-    usn_table.style = "Table Grid"
+    set_table_borders(usn_table)
     usn_table.rows[0].cells[0].text = "USN"
     doc.add_paragraph()
 
     # ── Header table ─────────────────────────────────────────────
     hdr_table = doc.add_table(rows=5, cols=4)
-    hdr_table.style = "Table Grid"
+    set_table_borders(hdr_table)
     hdr_data = [
         ["Month & Year of Examination", request.month_year, "Academic year", request.academic_year],
         ["Program", request.program, "Specialization", request.specialization],
@@ -48,7 +50,7 @@ def render(request: SvyasaAssessmentRequest) -> bytes:
     )
 
     table_a = doc.add_table(rows=1, cols=5)
-    table_a.style = "Table Grid"
+    set_table_borders(table_a)
     for i, h in enumerate(["Q.No.", "Questions", "CO", "RBTL", "Marks"]):
         table_a.rows[0].cells[i].text = h
         table_a.rows[0].cells[i].paragraphs[0].runs[0].bold = True
@@ -77,7 +79,7 @@ def render(request: SvyasaAssessmentRequest) -> bytes:
     )
 
     table_b = doc.add_table(rows=1, cols=5)
-    table_b.style = "Table Grid"
+    set_table_borders(table_b)
     for i, h in enumerate(["Q.No.", "Questions", "CO", "RBTL", "Marks"]):
         table_b.rows[0].cells[i].text = h
         table_b.rows[0].cells[i].paragraphs[0].runs[0].bold = True
