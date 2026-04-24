@@ -15,8 +15,7 @@ license: Proprietary. LICENSE.txt has complete terms.
 
 This skill generates a Graded Assessment Word document in Annamacharya University
 format. It uses the university template from `assets/templates/ANU.docx` as the
-base and inserts the university logo from `assets/logos/anu.png` at the top of
-the document.
+base.
 
 ---
 
@@ -27,9 +26,6 @@ The generation follows these steps:
 First, the ANU template file is opened from `assets/templates/ANU.docx`. This
 preserves the university's page layout, margins, and fonts. The template content
 is cleared so new questions can be written in cleanly.
-
-Next, the university logo is placed at the top of the page, centred, using the
-image file at `assets/logos/anu.png`.
 
 The header block is written with the university name in large bold text centred
 on the first line, followed by the batch and semester details, the exam type,
@@ -58,14 +54,9 @@ path is returned.
 
 ---
 
-## Template and Logo
+## Template
 
 Template file : `assets/templates/ANU.docx`
-Logo file     : `assets/logos/anu.png`
-
-If the logo file is not present the document is still generated without a logo.
-To add or update the logo, place a PNG image named `anu.png` inside the
-`assets/logos/` folder before running the skill.
 
 ---
 
