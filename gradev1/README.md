@@ -22,6 +22,92 @@ Step by step:
 
 ---
 
+## Quick Start — All Commands
+
+### 1. Create a test Google Sheet (AMET sample data auto-populated)
+```bash
+python scripts/create_test_sheet.py
+```
+Prints the Sheet ID and URL. Open the URL to see the tabs.
+
+---
+
+### 2. Run the full pipeline (Sheets → generate .docx → upload to Drive)
+```bash
+# AMET
+python pipeline.py --university amet --spreadsheet SHEET_ID
+
+# ANU
+python pipeline.py --university anu --spreadsheet SHEET_ID
+
+# CDU
+python pipeline.py --university cdu --spreadsheet SHEET_ID
+
+# S-VYASA
+python pipeline.py --university s-vyasa --spreadsheet SHEET_ID
+
+# Upload into a specific Drive folder
+python pipeline.py --university amet --spreadsheet SHEET_ID --folder DRIVE_FOLDER_ID
+
+# Dry run — parse and preview without generating
+python pipeline.py --university amet --spreadsheet SHEET_ID --dry-run
+```
+
+---
+
+### 3. Run via the shared agent generator
+```bash
+python .agents/skills/generate/generate.py --university amet --spreadsheet SHEET_ID
+python .agents/skills/generate/generate.py --university anu  --spreadsheet SHEET_ID --folder FOLDER_ID
+```
+
+---
+
+### 4. Run local demo (no Google Sheets needed — uses built-in sample data)
+```bash
+python demo.py
+```
+Generates all 4 university documents. Files saved to `artifacts/graded-assessments/`.
+
+---
+
+### 5. gws utility commands
+```bash
+# Re-authenticate with Google
+C:\tools\gws.exe auth login
+
+# List all files in your Drive
+C:\tools\gws.exe drive files list
+
+# Read a specific tab from a Google Sheet
+C:\tools\gws.exe sheets +read --spreadsheet SHEET_ID --range "Config!A1:B15"
+
+# Upload a .docx manually to Drive
+C:\tools\gws.exe drive +upload "D:\gradev1\artifacts\graded-assessments\amet-assessment.docx"
+
+# Upload into a specific Drive folder
+C:\tools\gws.exe drive +upload "path\to\file.docx" --parent DRIVE_FOLDER_ID
+```
+
+---
+
+### 6. Start the FastAPI server (optional)
+```bash
+python main.py
+# Server runs at http://localhost:8000
+
+# Health check
+curl http://localhost:8000/health
+
+# Generate via API
+curl -X POST http://localhost:8000/generate \
+  -H "Content-Type: application/json" \
+  -d '{"university_id": "amet", ...}' \
+  --output assessment.docx
+```
+
+---
+
 ## Supported Universities
 
 | University | ID | Format |
