@@ -44,11 +44,12 @@ import sys
 from pathlib import Path
 
 # ── resolve project root and lib path ────────────────────────────────────────
-# This file lives at .agents/skills/generate.py
-# parents[0] = .agents/skills/
-# parents[1] = .agents/
-# parents[2] = project root (gradev1/)
-ROOT = Path(__file__).parents[2]
+# This file lives at .agents/skills/generate/generate.py
+# parents[0] = .agents/skills/generate/
+# parents[1] = .agents/skills/
+# parents[2] = .agents/
+# parents[3] = project root (gradev1/)
+ROOT = Path(__file__).parents[3]
 sys.path.insert(0, str(ROOT / "libs" / "src"))
 sys.path.insert(0, str(ROOT))
 
