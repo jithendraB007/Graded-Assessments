@@ -42,6 +42,9 @@ Section B follows with its instruction "Answer the following Questions" in a
 merged row, and then the question pairs. Between every pair, a full-width merged
 OR row separates the two options.
 
+All text in the document uses Times New Roman, 11pt. The question number column
+is narrow and the question text column takes the remaining width.
+
 The finished document is saved to `artifacts/graded-assessments/` and the file
 path is returned.
 

@@ -6,12 +6,15 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt
 
-from graded_assessment.application.renderers._base import insert_logo, open_template, set_table_borders
+from graded_assessment.application.renderers._base import (
+    insert_logo, open_template, set_col_widths, set_document_font, set_table_borders,
+)
 from graded_assessment.domain.svyasa_types import SvyasaAssessmentRequest
 
 
 def render(request: SvyasaAssessmentRequest) -> bytes:
     doc = open_template("S-Vyasa")
+    set_document_font(doc)
     insert_logo(doc, "s-vyasa")
 
     # ── USN row ──────────────────────────────────────────────────
@@ -49,8 +52,10 @@ def render(request: SvyasaAssessmentRequest) -> bytes:
         f"{part_a_count} Q x {marks_each} M = {part_a_count * marks_each}"
     )
 
+    # col widths: Q.No. (0.65") | Questions (4.25") | CO (0.6") | RBTL (0.5") | Marks (0.5") = 6.5"
     table_a = doc.add_table(rows=1, cols=5)
     set_table_borders(table_a)
+    set_col_widths(table_a, [0.65, 4.25, 0.6, 0.5, 0.5])
     for i, h in enumerate(["Q.No.", "Questions", "CO", "RBTL", "Marks"]):
         table_a.rows[0].cells[i].text = h
         table_a.rows[0].cells[i].paragraphs[0].runs[0].bold = True
@@ -80,6 +85,7 @@ def render(request: SvyasaAssessmentRequest) -> bytes:
 
     table_b = doc.add_table(rows=1, cols=5)
     set_table_borders(table_b)
+    set_col_widths(table_b, [0.65, 4.25, 0.6, 0.5, 0.5])
     for i, h in enumerate(["Q.No.", "Questions", "CO", "RBTL", "Marks"]):
         table_b.rows[0].cells[i].text = h
         table_b.rows[0].cells[i].paragraphs[0].runs[0].bold = True

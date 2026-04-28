@@ -41,12 +41,17 @@ date of examination, course code, and course name.
 The Part A section follows. The heading "Part – A" is written centred and bold,
 followed by a line showing the marks formula such as "10 Q x 3 M = 30". The
 questions are laid out in a five-column table with the column headers Q.No,
-Questions, CO, RBTL, and Marks. Each of the ten questions occupies one row.
+Questions, CO, RBTL, and Marks. The Questions column is wide so question text
+is readable; the Q.No, CO, RBTL, and Marks columns are kept narrow. Each of
+the ten questions occupies one row.
 
 The Part B section follows the same pattern. The heading "Part - B" is written
 centred and bold, followed by the marks formula such as "5 Q x 14 M = 70". The
 five question pairs are laid out in the same five-column table. Each pair has an
 (a) question row and a (b) question row, separated by a full-width merged OR row.
+
+All text in the document uses Times New Roman, 11pt, matching the S-VYASA
+house style.
 
 The finished document is saved to `artifacts/graded-assessments/` and the file
 path is returned.

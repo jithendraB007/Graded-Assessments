@@ -6,7 +6,7 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-from docx.shared import Inches
+from docx.shared import Inches, Pt
 
 ASSETS_DIR = Path(__file__).parents[5] / "assets"
 TEMPLATES_DIR = ASSETS_DIR / "templates"
@@ -44,6 +44,31 @@ def set_table_borders(table) -> None:
     tblPr.append(tblBorders)
     if tbl.tblPr is None:
         tbl.insert(0, tblPr)
+
+
+def set_document_font(doc: Document, name: str = "Times New Roman", size: int = 11) -> None:
+    """Apply a default font to the document's Normal style so all new text inherits it."""
+    normal = next((s for s in doc.styles if s.name == "Normal"), None)
+    if normal:
+        normal.font.name = name
+        normal.font.size = Pt(size)
+
+
+def set_col_widths(table, widths_inches: list[float]) -> None:
+    """Set table column widths via the Word tblGrid element (twips = inches × 1440)."""
+    tbl = table._tbl
+    for existing in tbl.findall(qn("w:tblGrid")):
+        tbl.remove(existing)
+    tblGrid = OxmlElement("w:tblGrid")
+    for w in widths_inches:
+        gridCol = OxmlElement("w:gridCol")
+        gridCol.set(qn("w:w"), str(int(w * 1440)))
+        tblGrid.append(gridCol)
+    tblPr = tbl.find(qn("w:tblPr"))
+    if tblPr is not None:
+        tblPr.addnext(tblGrid)
+    else:
+        tbl.insert(0, tblGrid)
 
 
 def insert_logo(doc: Document, university_id: str, width_inches: float = 1.8) -> None:

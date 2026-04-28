@@ -6,7 +6,9 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt
 
-from graded_assessment.application.renderers._base import insert_logo, open_template, set_table_borders
+from graded_assessment.application.renderers._base import (
+    insert_logo, open_template, set_col_widths, set_document_font, set_table_borders,
+)
 from graded_assessment.domain.anu_types import AnuAssessmentRequest
 
 
@@ -20,6 +22,7 @@ def _bold_center(doc: Document, text: str, size: int = 12) -> None:
 
 def render(request: AnuAssessmentRequest) -> bytes:
     doc = open_template("ANU")
+    set_document_font(doc)
     insert_logo(doc, "anu")
 
     # ── Header ──────────────────────────────────────────────────
@@ -47,8 +50,10 @@ def render(request: AnuAssessmentRequest) -> bytes:
     doc.add_paragraph()
 
     # ── Part A table ────────────────────────────────────────────
+    # col widths: Q# (0.4") | sub (0.45") | text-a (2.0") | text-b (1.7") | CO (0.95") | Bloom (0.9") = 6.4"
     part_a_table = doc.add_table(rows=1, cols=6)
     set_table_borders(part_a_table)
+    set_col_widths(part_a_table, [0.4, 0.45, 2.0, 1.7, 0.95, 0.9])
 
     hdr = part_a_table.rows[0]
     for i, h in enumerate(["PART-A", "", "", "", "Course Outcomes", "Bloom's level"]):
@@ -75,8 +80,10 @@ def render(request: AnuAssessmentRequest) -> bytes:
     doc.add_paragraph()
 
     # ── Part B table ────────────────────────────────────────────
+    # col widths: Q# (0.5") | text-a (1.3") | text-b (2.5") | Marks (0.7") | CO (0.75") | Bloom (0.75") = 6.5"
     part_b_table = doc.add_table(rows=1, cols=6)
     set_table_borders(part_b_table)
+    set_col_widths(part_b_table, [0.5, 1.3, 2.5, 0.7, 0.75, 0.75])
 
     hdr_b = part_b_table.rows[0]
     for i, h in enumerate(["PART B", "", "", "Marks", "Course Outcomes", "Bloom's Level"]):

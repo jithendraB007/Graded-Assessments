@@ -6,13 +6,17 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt
 
-from graded_assessment.application.renderers._base import insert_logo, open_template, set_table_borders
+from graded_assessment.application.renderers._base import (
+    insert_logo, open_template, set_col_widths, set_document_font, set_table_borders,
+)
 from graded_assessment.domain.cdu_types import CduAssessmentRequest, CduSet
 
 
 def _render_set(doc: Document, cdu_set: CduSet, university_name: str, course_info: str, time: str, max_marks: int) -> None:
+    # col widths: Q# (0.7") | text (5.8") = 6.5"
     table = doc.add_table(rows=0, cols=2)
     set_table_borders(table)
+    set_col_widths(table, [0.7, 5.8])
 
     # Set header row
     hdr_row = table.add_row()
@@ -69,6 +73,7 @@ def _render_set(doc: Document, cdu_set: CduSet, university_name: str, course_inf
 
 def render(request: CduAssessmentRequest) -> bytes:
     doc = open_template("CDU")
+    set_document_font(doc)
     insert_logo(doc, "cdu")
 
     for i, cdu_set in enumerate(request.sets):

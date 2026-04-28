@@ -36,9 +36,14 @@ the duration and maximum marks — all matching the AMET house style.
 A numbered list of exam instructions follows the header.
 
 The questions are laid out in a five-column table with the headings Question No,
-Question, Mark, BTL, and CO. The table is divided into three clearly labelled
-sections — Part A, Part B, and Part C — each introduced by a full-width merged
-header row showing the marks formula and the attempt instruction.
+Question, Mark, BTL, and CO. The Question column is wide so question text is
+readable; the Q.No, Mark, BTL, and CO columns are narrow. The table is divided
+into three clearly labelled sections — Part A, Part B, and Part C — each
+introduced by a full-width merged header row showing the marks formula and the
+attempt instruction.
+
+All text in the document uses Times New Roman, 11pt, matching the AMET house
+style.
 
 In Part A, each question occupies one row. In Part B, every question pair is
 separated by a centred OR row so students can choose between option (a) and

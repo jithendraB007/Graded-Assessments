@@ -49,6 +49,10 @@ The Part B questions follow in a separate six-column table with the headings
 PART B, Marks, Course Outcomes, and Bloom's Level. Questions with OR alternates
 are separated by a full-width merged OR row.
 
+All text in the document uses Times New Roman, 11pt. The question text columns
+are wide and the narrow columns (Q#, Marks, CO, Bloom) are kept compact so the
+paper is easy to read.
+
 The finished document is saved to `artifacts/graded-assessments/` and the file
 path is returned.
 

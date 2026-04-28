@@ -26,7 +26,7 @@ def read_sheet(spreadsheet_id: str, range_: str) -> list[list[str]]:
         [_gws(), "sheets", "+read",
          "--spreadsheet", spreadsheet_id,
          "--range", range_],
-        capture_output=True, text=True,
+        capture_output=True, text=True, encoding="utf-8",
     )
     if result.returncode != 0:
         raise RuntimeError(f"gws sheets +read failed:\n{result.stderr}")
@@ -41,7 +41,7 @@ def upload_to_drive(file_path: str, folder_id: str | None = None, name: str | No
         cmd += ["--parent", folder_id]
     if name:
         cmd += ["--name", name]
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    result = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8")
     if result.returncode != 0:
         raise RuntimeError(f"gws drive +upload failed:\n{result.stderr}")
     return json.loads(result.stdout)

@@ -47,7 +47,7 @@ def run(university_id: str, spreadsheet_id: str, folder_id: str | None, dry_run:
     # ── Step 1: Read from Google Sheets ──────────────────────────────────────
     print(f"\n[1/3] Reading {university_id.upper()} questions from Google Sheets...")
     request = parse(university_id, spreadsheet_id)
-    print(f"      Done — request parsed successfully.")
+    print(f"      Done - request parsed successfully.")
 
     if dry_run:
         print("\n[DRY RUN] Request object:")
