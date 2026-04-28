@@ -58,7 +58,7 @@ def run(university_id: str, spreadsheet_id: str, folder_id: str | None, dry_run:
     # ── Step 2: Generate .docx ────────────────────────────────────────────────
     print(f"\n[2/3] Generating .docx document...")
     result = GradedAssessmentService().generate(request)
-    print(f"      Saved → {result.output_path}")
+    print(f"      Saved -> {result.output_path}")
 
     # ── Step 3: Upload to Google Drive ────────────────────────────────────────
     print(f"\n[3/3] Uploading to Google Drive...")
@@ -67,9 +67,9 @@ def run(university_id: str, spreadsheet_id: str, folder_id: str | None, dry_run:
     drive_name = file_meta.get("name", Path(result.output_path).name)
     drive_link = f"https://drive.google.com/file/d/{drive_id}/view"
 
-    print(f"      Uploaded → {drive_name}")
-    print(f"      Drive ID → {drive_id}")
-    print(f"      Link     → {drive_link}")
+    print(f"      Uploaded -> {drive_name}")
+    print(f"      Drive ID -> {drive_id}")
+    print(f"      Link     -> {drive_link}")
     print(f"\nDone.")
 
 
