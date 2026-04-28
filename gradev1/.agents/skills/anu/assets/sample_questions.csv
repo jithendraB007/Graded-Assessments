@@ -1,0 +1,42 @@
+# ANU Graded Assessment — Sample CSV
+# Columns: section, f1, f2, f3, f4, f5, f6, f7
+#
+# config   row: f1=key,    f2=value
+# note     row: f1=text
+# part_a   row: f1=sub(a-e), f2=text, f3=co, f4=bloom
+# part_b   row: f1=number,   f2=text, f3=marks, f4=co, f5=bloom
+#               (use f1=(OR) for OR separator rows)
+
+section,f1,f2,f3,f4,f5,f6,f7
+
+# ── Config ───────────────────────────────────────────────────────────────────
+config,university_name,ANNAMACHARYA UNIVERSITY,,,,,
+config,batch,II B.Tech I Semester – CSE and Allied Branches,,,,,
+config,exam_type,IInd Mid Examination,,,,,
+config,course_name,Data Structures,,,,,
+config,date,15-04-2026,,,,,
+config,duration,2 hours,,,,,
+config,max_marks,30,,,,,
+
+# ── Notes ────────────────────────────────────────────────────────────────────
+note,Answer all questions from Part A.,,,,,,
+note,Each question in Part B carries 10 marks.,,,,,,
+note,"Condensed marks: attempt any two questions from Part B, each worth 10 marks.",,,,,,
+
+# ── Part A — 5 sub-questions under Q1 (1 mark each) ─────────────────────────
+part_a,a,Define a stack and list its two primary operations.,CO1,L1,,,
+part_a,b,What is the difference between a linear queue and a circular queue?,CO2,L2,,,
+part_a,c,State any two applications of linked lists.,CO3,L1,,,
+part_a,d,What is a binary search tree? State the property it satisfies.,CO4,L2,,,
+part_a,e,Define graph traversal. Name the two standard traversal techniques.,CO5,L1,,,
+
+# ── Part B — long answer with OR pairs ───────────────────────────────────────
+part_b,2,"Explain the push and pop operations on a stack with an algorithm and example.",10,CO1,L3,,
+part_b,(OR),,,,,,
+part_b,3,"Describe the implementation of a stack using an array. Write a function to check for stack overflow and underflow.",10,CO1,L4,,
+part_b,4,"Explain the enqueue and dequeue operations of a circular queue with diagrams.",10,CO2,L3,,
+part_b,(OR),,,,,,
+part_b,5,"Compare linear queue and circular queue. Implement a circular queue using an array.",10,CO2,L4,,
+part_b,6,"Explain singly linked list. Write algorithms for insertion at the beginning and deletion from the end.",10,CO3,L3,,
+part_b,(OR),,,,,,
+part_b,7,"What is a doubly linked list? Compare it with a singly linked list and write an algorithm for traversal.",10,CO3,L4,,

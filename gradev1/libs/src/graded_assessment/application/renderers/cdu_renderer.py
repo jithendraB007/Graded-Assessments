@@ -13,10 +13,10 @@ from graded_assessment.domain.cdu_types import CduAssessmentRequest, CduSet
 
 
 def _render_set(doc: Document, cdu_set: CduSet, university_name: str, course_info: str, time: str, max_marks: int) -> None:
-    # col widths: Q# (0.7") | text (5.8") = 6.5"
+    # col widths: Q# (1.3") | text (5.2") = 6.5"  — wide enough for "Time: 3 Hours"
     table = doc.add_table(rows=0, cols=2)
     set_table_borders(table)
-    set_col_widths(table, [0.7, 5.8])
+    set_col_widths(table, [1.3, 5.2])
 
     # Set header row
     hdr_row = table.add_row()
@@ -28,8 +28,8 @@ def _render_set(doc: Document, cdu_set: CduSet, university_name: str, course_inf
     hdr_row.cells[0].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
 
     time_row = table.add_row()
-    time_row.cells[0].text = f"Time: {time}]"
-    time_row.cells[1].text = f"[Max. Marks: {max_marks}"
+    time_row.cells[0].text = f"[Time: {time}]"
+    time_row.cells[1].text = f"[Max. Marks: {max_marks}]"
 
     # Section A
     sec_a_row = table.add_row()

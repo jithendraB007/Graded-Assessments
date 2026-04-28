@@ -7,7 +7,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt
 
 from graded_assessment.application.renderers._base import (
-    insert_logo, open_template, set_col_widths, set_document_font, set_table_borders,
+    open_template, set_col_widths, set_document_font, set_table_borders,
 )
 from graded_assessment.domain.svyasa_types import SvyasaAssessmentRequest
 
@@ -15,7 +15,6 @@ from graded_assessment.domain.svyasa_types import SvyasaAssessmentRequest
 def render(request: SvyasaAssessmentRequest) -> bytes:
     doc = open_template("S-Vyasa")
     set_document_font(doc)
-    insert_logo(doc, "s-vyasa")
 
     # ── USN row ──────────────────────────────────────────────────
     usn_table = doc.add_table(rows=1, cols=12)
@@ -30,12 +29,22 @@ def render(request: SvyasaAssessmentRequest) -> bytes:
         ["Month & Year of Examination", request.month_year, "Academic year", request.academic_year],
         ["Program", request.program, "Specialization", request.specialization],
         ["Semester", request.semester, "Date of Examination", request.date_of_exam],
-        ["Course Code", request.course_code, request.course_code, request.course_code],
-        ["Course Name", request.course_name, request.course_name, request.course_name],
     ]
     for r_idx, row_data in enumerate(hdr_data):
         for c_idx, text in enumerate(row_data):
             hdr_table.rows[r_idx].cells[c_idx].text = text
+
+    # Course Code — label in col 0, value merged across cols 1-3
+    cc_row = hdr_table.rows[3]
+    cc_row.cells[0].text = "Course Code"
+    cc_row.cells[1].merge(cc_row.cells[2]).merge(cc_row.cells[3])
+    cc_row.cells[1].text = request.course_code
+
+    # Course Name — label in col 0, value merged across cols 1-3
+    cn_row = hdr_table.rows[4]
+    cn_row.cells[0].text = "Course Name"
+    cn_row.cells[1].merge(cn_row.cells[2]).merge(cn_row.cells[3])
+    cn_row.cells[1].text = request.course_name
 
     doc.add_paragraph()
 

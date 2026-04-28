@@ -15,6 +15,36 @@ license: Proprietary. LICENSE.txt has complete terms.
 This skill generates a Graded Assessment Word document in AMET university format.
 It uses the university template from `assets/templates/AMET.docx` as the base and
 inserts the university logo from `assets/logos/amet.png` at the top of the document.
+The output is date-stamped and uploaded automatically to the AMET University Drive folder.
+
+---
+
+## Input Methods
+
+### Option 1 — Google Sheets
+```bash
+python .agents/skills/generate/generate.py --university amet --spreadsheet SHEET_ID
+```
+
+### Option 2 — CSV file
+```bash
+python .agents/skills/generate/generate.py --university amet --csv path/to/questions.csv
+```
+A sample CSV is at `.agents/skills/amet/assets/sample_questions.csv`.
+The CSV has 8 columns: `section, f1, f2, f3, f4, f5, f6, f7`.
+Column meanings by section:
+- `config` row: f1=key, f2=value (exam_type, programme, semester, course_name, course_code, duration, max_marks, part_a_total, part_a_instruction, part_b_total, part_b_instruction, part_c_total, part_c_instruction)
+- `instruction` row: f1=instruction text
+- `part_a` row: f1=number, f2=question text, f3=mark, f4=btl (K1-K6), f5=co (CO1-CO5)
+- `part_b` row: f1=pair number, f2=option (a or b), f3=question number, f4=text, f5=mark, f6=btl, f7=co
+- `part_c` row: f1=number, f2=text, f3=mark, f4=btl, f5=co
+
+### Option 3 — Questions provided in chat
+When the user pastes or types questions directly in the conversation:
+1. Collect all required fields (exam_type, programme, semester, course_name, course_code, duration, max_marks, instructions, all Part A/B/C questions with BTL and CO)
+2. Write the data to a temporary CSV file at `artifacts/temp_amet.csv` using the format above
+3. Run: `python .agents/skills/generate/generate.py --university amet --csv artifacts/temp_amet.csv`
+4. Report the Drive link from the output
 
 ---
 

@@ -2,76 +2,49 @@
 
 A Python library that generates university-branded Graded Assessment Word documents (`.docx`).
 It reads question data from **Google Sheets**, generates the document using a university-specific
-template, and uploads the result to **Google Drive** — all in one command.
+template, and uploads the result to the university's **Google Drive folder** — all in one command.
 
 ---
 
 ## How It Works
 
 ```
-Google Sheets  -->  pipeline.py  -->  .docx renderer  -->  Google Drive
-(question data)     (orchestrator)    (per university)     (upload)
+Google Sheets  -->  generate.py  -->  .docx renderer  -->  Google Drive (university folder)
+(question data)     (orchestrator)    (per university)     (date-stamped file)
 ```
 
 Step by step:
 
 1. You fill a Google Sheet with exam metadata and questions (one tab per section).
-2. Run `pipeline.py` — it reads the sheet via the `gws` CLI, builds a typed request object, passes it to `GradedAssessmentService`, which calls the right university renderer.
-3. The renderer opens the university `.docx` template, clears its body, inserts the logo, builds the header and question tables, and saves the file to `artifacts/graded-assessments/`.
-4. The pipeline uploads the file to Google Drive and prints a direct link.
+2. Run `generate.py` — it reads the sheet via the `gws` CLI, builds a typed request object,
+   passes it to `GradedAssessmentService`, which calls the right university renderer.
+3. The renderer opens the university `.docx` template, clears its body, inserts the logo,
+   builds the header and question tables, and saves the file to `artifacts/graded-assessments/`.
+4. The file is uploaded to that university's dedicated Google Drive folder and a direct link is printed.
 
 ---
 
-## Quick Start — All Commands
+## Quick Start
 
-### 1. Create a test Google Sheet (AMET sample data auto-populated)
+### Run the generator (Sheets -> generate .docx -> upload to Drive)
+
 ```bash
-python scripts/create_test_sheet.py
-```
-Prints the Sheet ID and URL. Open the URL to see the tabs.
+python .agents/skills/generate/generate.py --university amet     --spreadsheet SHEET_ID
+python .agents/skills/generate/generate.py --university anu      --spreadsheet SHEET_ID
+python .agents/skills/generate/generate.py --university cdu      --spreadsheet SHEET_ID
+python .agents/skills/generate/generate.py --university s-vyasa  --spreadsheet SHEET_ID
 
----
-
-### 2. Run the full pipeline (Sheets → generate .docx → upload to Drive)
-```bash
-# AMET
-python pipeline.py --university amet --spreadsheet SHEET_ID
-
-# ANU
-python pipeline.py --university anu --spreadsheet SHEET_ID
-
-# CDU
-python pipeline.py --university cdu --spreadsheet SHEET_ID
-
-# S-VYASA
-python pipeline.py --university s-vyasa --spreadsheet SHEET_ID
-
-# Upload into a specific Drive folder
-python pipeline.py --university amet --spreadsheet SHEET_ID --folder DRIVE_FOLDER_ID
+# Override Drive folder (optional — defaults to university's own folder)
+python .agents/skills/generate/generate.py --university amet --spreadsheet SHEET_ID --folder DRIVE_FOLDER_ID
 
 # Dry run — parse and preview without generating
-python pipeline.py --university amet --spreadsheet SHEET_ID --dry-run
+python .agents/skills/generate/generate.py --university amet --spreadsheet SHEET_ID --dry-run
 ```
 
 ---
 
-### 3. Run via the shared agent generator
-```bash
-python .agents/skills/generate/generate.py --university amet --spreadsheet SHEET_ID
-python .agents/skills/generate/generate.py --university anu  --spreadsheet SHEET_ID --folder FOLDER_ID
-```
+### gws utility commands
 
----
-
-### 4. Run local demo (no Google Sheets needed — uses built-in sample data)
-```bash
-python demo.py
-```
-Generates all 4 university documents. Files saved to `artifacts/graded-assessments/`.
-
----
-
-### 5. gws utility commands
 ```bash
 # Re-authenticate with Google
 C:\tools\gws.exe auth login
@@ -83,7 +56,7 @@ C:\tools\gws.exe drive files list
 C:\tools\gws.exe sheets +read --spreadsheet SHEET_ID --range "Config!A1:B15"
 
 # Upload a .docx manually to Drive
-C:\tools\gws.exe drive +upload "D:\gradev1\artifacts\graded-assessments\amet-assessment.docx"
+C:\tools\gws.exe drive +upload "D:\gradev1\artifacts\graded-assessments\amet-assessment-2026-04-28.docx"
 
 # Upload into a specific Drive folder
 C:\tools\gws.exe drive +upload "path\to\file.docx" --parent DRIVE_FOLDER_ID
@@ -91,31 +64,17 @@ C:\tools\gws.exe drive +upload "path\to\file.docx" --parent DRIVE_FOLDER_ID
 
 ---
 
-### 6. Start the FastAPI server (optional)
-```bash
-python main.py
-# Server runs at http://localhost:8000
-
-# Health check
-curl http://localhost:8000/health
-
-# Generate via API
-curl -X POST http://localhost:8000/generate \
-  -H "Content-Type: application/json" \
-  -d '{"university_id": "amet", ...}' \
-  --output assessment.docx
-```
-
----
-
 ## Supported Universities
 
-| University | ID | Format |
+| University | ID | Drive Folder |
 |---|---|---|
-| AMET (Academy of Maritime Education and Training) | `amet` | Part A — 20 MCQ (1M each) · Part B — 5 OR pairs (14M each) · Part C — case study (10M) |
-| Annamacharya University | `anu` | Part A — 5 sub-questions (a–e) under Q1 · Part B — long answer with OR rows |
-| Chaitanya Deemed University | `cdu` | Set A / B / C — each with Section A (10 short Q) and Section B (question pairs with OR) |
-| S-VYASA University | `s-vyasa` | USN row · header metadata · Part A (10 Q × 3M = 30) · Part B (5 pairs × 14M = 70) |
+| AMET (Academy of Maritime Education and Training) | `amet` | AMET University |
+| Annamacharya University | `anu` | ANU University |
+| Chaitanya Deemed University | `cdu` | CUD University |
+| S-VYASA University | `s-vyasa` | s-vyasa University |
+
+Each university's files are uploaded automatically to its dedicated Drive folder, named
+`{university}-assessment-{date}.docx` (e.g. `amet-assessment-2026-04-28.docx`).
 
 ---
 
@@ -125,7 +84,7 @@ curl -X POST http://localhost:8000/generate \
 gradev1/
 ├── .agents/skills/
 │   ├── generate/
-│   │   └── generate.py         <- shared generator used by all university skills
+│   │   └── generate.py         <- entry point: Sheets -> generate -> Drive
 │   ├── amet/
 │   │   ├── SKILL.md            <- tells AI agents when to trigger AMET generation
 │   │   └── assets/
@@ -153,11 +112,12 @@ gradev1/
 │   │   ├── ANU.docx
 │   │   ├── CDU.docx
 │   │   └── S-Vyasa.docx
-│   └── logos/                  <- university logos (extracted from templates)
+│   └── logos/                  <- university logos
 │       ├── amet.png
 │       └── s-vyasa.jpg
 │
 ├── integrations/
+│   ├── drive_folders.py        <- maps university_id -> Drive folder ID
 │   ├── gws_client.py           <- subprocess wrapper: read_sheet(), upload_to_drive()
 │   └── sheet_parsers.py        <- parses sheet tabs into typed request objects
 │
@@ -170,21 +130,15 @@ gradev1/
 │   ├── application/
 │   │   ├── generation_service.py   <- dispatches to right renderer by university_id
 │   │   └── renderers/
-│   │       ├── _base.py            <- open_template(), insert_logo(), set_table_borders()
+│   │       ├── _base.py            <- shared helpers: open_template, insert_logo, set_table_borders, set_col_widths, set_document_font
 │   │       ├── amet_renderer.py
 │   │       ├── anu_renderer.py
 │   │       ├── cdu_renderer.py
 │   │       └── svyasa_renderer.py
 │   └── infrastructure/
-│       └── docx_exporter.py        <- saves .docx bytes to artifacts/
+│       └── docx_exporter.py        <- saves .docx to artifacts/ with date-stamped filename
 │
-├── scripts/
-│   └── create_test_sheet.py    <- creates a Google Sheet with AMET sample data for testing
-│
-├── artifacts/graded-assessments/   <- all generated .docx files saved here
-├── pipeline.py                 <- main entry point: Sheets -> generate -> Drive
-├── demo.py                     <- local test: generates all 4 universities offline
-└── main.py                     <- FastAPI server (POST /generate, GET /health)
+└── artifacts/graded-assessments/   <- all generated .docx files saved here
 ```
 
 ---
@@ -213,12 +167,6 @@ cd Graded-Assessments/gradev1
 
 ```bash
 pip install python-docx docxtpl pydantic
-```
-
-For the FastAPI server also install:
-
-```bash
-pip install fastapi uvicorn
 ```
 
 ---
@@ -283,105 +231,33 @@ C:\tools\gws.exe drive files list
 # {"files": [...], "kind": "drive#fileList"}
 ```
 
-### 4. Install the agent skills
-
-```powershell
-npx skills add https://github.com/googleworkspace/cli/tree/main/skills/gws-shared --yes
-npx skills add https://github.com/googleworkspace/cli/tree/main/skills/gws-docs --yes
-npx skills add https://github.com/googleworkspace/cli/tree/main/skills/gws-docs-write --yes
-npx skills add https://github.com/googleworkspace/cli/tree/main/skills/gws-sheets-read --yes
-```
-
 ---
 
-## Part 3 — Running the Application
-
-### Option A — Full pipeline (Google Sheets → generate → Google Drive)
-
-#### Step 1: Create your Google Sheet
-
-Each university uses a specific tab structure. See the **Google Sheet Structure** section below for the exact layout.
-
-To create a test sheet with AMET sample data automatically:
+## Part 3 — Running the Generator
 
 ```bash
-python scripts/create_test_sheet.py
-```
-
-This creates a ready-to-use Google Sheet and prints its ID and URL.
-
-#### Step 2: Run the pipeline
-
-```bash
-python pipeline.py --university amet     --spreadsheet SHEET_ID
-python pipeline.py --university anu      --spreadsheet SHEET_ID
-python pipeline.py --university cdu      --spreadsheet SHEET_ID
-python pipeline.py --university s-vyasa  --spreadsheet SHEET_ID
-```
-
-Upload directly into a Drive folder:
-
-```bash
-python pipeline.py --university amet --spreadsheet SHEET_ID --folder DRIVE_FOLDER_ID
-```
-
-Parse and preview without generating:
-
-```bash
-python pipeline.py --university amet --spreadsheet SHEET_ID --dry-run
+python .agents/skills/generate/generate.py --university amet     --spreadsheet SHEET_ID
+python .agents/skills/generate/generate.py --university anu      --spreadsheet SHEET_ID
+python .agents/skills/generate/generate.py --university cdu      --spreadsheet SHEET_ID
+python .agents/skills/generate/generate.py --university s-vyasa  --spreadsheet SHEET_ID
 ```
 
 Output:
 
 ```
 [1/3] Reading AMET questions from Google Sheets...
-      Done — request parsed successfully.
+      Parsed successfully.
 
 [2/3] Generating .docx document...
-      Saved -> D:\gradev1\artifacts\graded-assessments\amet-assessment-56467994.docx
+      Saved -> D:\gradev1\artifacts\graded-assessments\amet-assessment-2026-04-28.docx
 
 [3/3] Uploading to Google Drive...
-      Uploaded -> amet-assessment-56467994.docx
-      Drive ID -> 1MvwCvVzSXF...
-      Link     -> https://drive.google.com/file/d/1MvwCvVzSXF.../view
+      Folder -> AMET university folder
+      File   -> amet-assessment-2026-04-28.docx
+      Link   -> https://drive.google.com/file/d/1.../view
 
 Done.
 ```
-
-### Option B — Shared agent generator (used by AI agent skills)
-
-```bash
-python .agents/skills/generate/generate.py --university amet --spreadsheet SHEET_ID
-python .agents/skills/generate/generate.py --university anu  --spreadsheet SHEET_ID --folder FOLDER_ID
-```
-
-### Option C — Local demo (no Google Sheets, no internet)
-
-Generates all 4 university documents with built-in sample questions:
-
-```bash
-python demo.py
-```
-
-Output files appear in `artifacts/graded-assessments/`. Open in Word to review.
-
-### Option D — FastAPI server
-
-```bash
-python main.py
-```
-
-```bash
-curl http://localhost:8000/health
-# {"status": "ok"}
-
-curl -X POST http://localhost:8000/generate \
-  -H "Content-Type: application/json" \
-  -d '{"university_id": "amet", ...}' \
-  --output assessment.docx
-```
-
-> **Windows note:** If uvicorn fails to start due to an SSL DLL policy error, use `demo.py` or `pipeline.py` instead.
 
 ---
 
@@ -488,31 +364,7 @@ CDU does not use BTL or CO columns.
 2. Add a logo to `assets/logos/{university_id}.png` (optional)
 3. Create domain types in `libs/src/graded_assessment/domain/{university_id}_types.py`
 4. Create a renderer in `libs/src/graded_assessment/application/renderers/{university_id}_renderer.py`
-   - Start with `open_template()`, `insert_logo()`, and `set_table_borders()` from `_base.py`
 5. Register the renderer in `generation_service.py` inside `_RENDERER_MAP`
 6. Add a parser to `integrations/sheet_parsers.py` and register it in `PARSERS`
-7. Create `.agents/skills/{university_id}/SKILL.md` with the trigger description
-
----
-
-## Key Commands Reference
-
-```bash
-# Test sheet creation (AMET sample data)
-python scripts/create_test_sheet.py
-
-# Run pipeline for any university
-python pipeline.py --university <id> --spreadsheet <SHEET_ID> [--folder <DRIVE_FOLDER_ID>]
-
-# Run shared agent generator
-python .agents/skills/generate/generate.py --university <id> --spreadsheet <SHEET_ID>
-
-# Local offline test (all 4 universities)
-python demo.py
-
-# Upload a file to Drive manually
-C:\tools\gws.exe drive +upload "path\to\file.docx" --parent FOLDER_ID
-
-# Re-authenticate gws
-C:\tools\gws.exe auth login
-```
+7. Add the Drive folder ID to `integrations/drive_folders.py`
+8. Create `.agents/skills/{university_id}/SKILL.md` with the trigger description

@@ -1,0 +1,42 @@
+# S-VYASA Graded Assessment — Sample CSV
+# Columns: section, f1, f2, f3, f4, f5, f6, f7
+#
+# config  row: f1=key, f2=value
+# part_a  row: f1=number, f2=text, f3=co, f4=rbtl, f5=marks
+# part_b  row: f1=pair, f2=option(a/b), f3=number, f4=text, f5=co, f6=rbtl, f7=marks
+
+section,f1,f2,f3,f4,f5,f6,f7
+
+# ── Config ───────────────────────────────────────────────────────────────────
+config,month_year,April 2026,,,,,
+config,academic_year,2025-26,,,,,
+config,program,B.Sc. Yoga & Health Sciences,,,,,
+config,specialization,Yoga Therapy,,,,,
+config,semester,IV,,,,,
+config,date_of_exam,18-04-2026,,,,,
+config,course_code,YT401,,,,,
+config,course_name,Anatomy and Physiology,,,,,
+
+# ── Part A — 10 questions × 3 marks = 30 marks ───────────────────────────────
+part_a,1,Define homeostasis and explain its significance in the human body.,CO1,2,3,,
+part_a,2,List the main components of the skeletal system and state their functions.,CO1,1,3,,
+part_a,3,Explain the role of the diaphragm in the process of respiration.,CO2,2,3,,
+part_a,4,Define tidal volume and vital capacity. State normal values for each.,CO2,1,3,,
+part_a,5,Describe the cardiac cycle and the events occurring during systole and diastole.,CO3,2,3,,
+part_a,6,Name the layers of the heart wall and state the function of each layer.,CO3,1,3,,
+part_a,7,What is peristalsis? Explain its role in the digestive process.,CO4,2,3,,
+part_a,8,Define glomerular filtration rate (GFR) and state the factors that influence it.,CO4,2,3,,
+part_a,9,Describe the structure and function of a neuron.,CO5,1,3,,
+part_a,10,Explain the role of the hypothalamus in regulating body temperature.,CO5,3,3,,
+
+# ── Part B — 5 pairs × 14 marks = 70 marks ───────────────────────────────────
+part_b,1,a,11 (a),Explain the structure of the axial skeleton. Describe the functions of the vertebral column.,CO1,3,14
+part_b,1,b,11 (b),"Describe the structure and functions of skeletal, smooth, and cardiac muscle tissues.",CO1,3,14
+part_b,2,a,12 (a),Explain the mechanism of breathing. Describe external and internal respiration with diagrams.,CO2,3,14
+part_b,2,b,12 (b),Describe the transport of oxygen and carbon dioxide in the blood. Explain the role of haemoglobin.,CO2,4,14
+part_b,3,a,13 (a),Explain the conducting system of the heart. Describe the events of the cardiac cycle with a diagram.,CO3,3,14
+part_b,3,b,13 (b),Describe the structure of blood vessels (arteries veins and capillaries) and explain blood pressure regulation.,CO3,4,14
+part_b,4,a,14 (a),Describe the structure of the nephron and explain the process of urine formation.,CO4,3,14
+part_b,4,b,14 (b),Explain the process of digestion and absorption of carbohydrates proteins and fats in the small intestine.,CO4,4,14
+part_b,5,a,15 (a),Describe the structure of a nerve cell. Explain the mechanism of nerve impulse transmission across a synapse.,CO5,3,14
+part_b,5,b,15 (b),Explain the role of the autonomic nervous system in regulating cardiovascular and digestive functions.,CO5,4,14

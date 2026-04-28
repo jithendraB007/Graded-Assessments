@@ -1,0 +1,89 @@
+# CDU Graded Assessment — Sample CSV
+# Columns: section, f1, f2, f3, f4, f5, f6, f7
+#
+# config   row: f1=key, f2=value
+# set_a_a  row: f1=number, f2=text         (Set A – Section A question)
+# set_a_b  row: f1=pair,   f2=number, f3=text  (Set A – Section B pair row)
+# set_b_a / set_b_b — same layout for Set B
+# set_c_a / set_c_b — same layout for Set C
+
+section,f1,f2,f3,f4,f5,f6,f7
+
+# ── Config ───────────────────────────────────────────────────────────────────
+config,university_name,CHAITANYA DEEMED TO BE UNIVERSITY,,,,,
+config,course_info,B.Tech II Year – Data Structures (CS301),,,,,
+config,time,3 Hours,,,,,
+config,max_marks,70,,,,,
+config,section_a_instruction,Answer any Six Questions. Each question carries 2 marks.,,,,,
+config,section_b_instruction,Answer the following Questions. Each question carries 10 marks.,,,,,
+
+# ── Set A ─────────────────────────────────────────────────────────────────────
+# Section A — 10 short questions
+set_a_a,1,Define a stack and state its LIFO property.,,,,,,
+set_a_a,2,What is a queue? State its FIFO property.,,,,,,
+set_a_a,3,Define a linked list and name its types.,,,,,,
+set_a_a,4,What is a binary tree? State the maximum nodes at level n.,,,,,,
+set_a_a,5,Define graph and mention its two representations.,,,,,,
+set_a_a,6,What is hashing? State any two collision resolution techniques.,,,,,,
+set_a_a,7,Define AVL tree and state its balancing factor.,,,,,,
+set_a_a,8,What is a priority queue? Give one application.,,,,,,
+set_a_a,9,Define recursion with an example.,,,,,,
+set_a_a,10,State the difference between DFS and BFS.,,,,,,
+
+# Section B — 5 OR pairs
+set_a_b,1,1 (a),"Explain push and pop operations on a stack with algorithm and example.",,,,
+set_a_b,1,1 (b),"Implement a stack using an array. Write functions for push, pop and display.",,,,
+set_a_b,2,2 (a),Explain the implementation of a circular queue with enqueue and dequeue operations.,,,,
+set_a_b,2,2 (b),Compare linear queue and circular queue. Write an algorithm for a linear queue.,,,,
+set_a_b,3,3 (a),Explain singly linked list with insertion and deletion at various positions.,,,,
+set_a_b,3,3 (b),What is a doubly linked list? Write algorithms for insertion and deletion.,,,,
+set_a_b,4,4 (a),Explain inorder and preorder traversals of a binary tree with examples.,,,,
+set_a_b,4,4 (b),Define BST. Write algorithms for search and insertion in a BST.,,,,
+set_a_b,5,5 (a),Explain Depth First Search (DFS) with algorithm and example.,,,,
+set_a_b,5,5 (b),Explain Breadth First Search (BFS) with algorithm and example.,,,,
+
+# ── Set B ─────────────────────────────────────────────────────────────────────
+set_b_a,1,Define time complexity and space complexity.,,,,,,
+set_b_a,2,What is an abstract data type (ADT)?,,,,,,
+set_b_a,3,State the difference between array and linked list.,,,,,,
+set_b_a,4,What is a complete binary tree?,,,,,,
+set_b_a,5,Define spanning tree.,,,,,,
+set_b_a,6,What is dynamic memory allocation?,,,,,,
+set_b_a,7,Define B-tree and state its order.,,,,,,
+set_b_a,8,What is a deque? Name its types.,,,,,,
+set_b_a,9,Define tail recursion with an example.,,,,,,
+set_b_a,10,State the difference between directed and undirected graphs.,,,,,,
+
+set_b_b,1,1 (a),"Explain applications of stacks: expression evaluation and balancing parentheses.",,,,
+set_b_b,1,1 (b),Convert the following infix expression to postfix using a stack: A + B * C – D / E.,,,,
+set_b_b,2,2 (a),Explain the implementation of a queue using two stacks.,,,,
+set_b_b,2,2 (b),Write an algorithm to implement a double-ended queue (deque).,,,,
+set_b_b,3,3 (a),Explain circular linked list. Write algorithms for insertion and deletion.,,,,
+set_b_b,3,3 (b),Write an algorithm to reverse a singly linked list.,,,,
+set_b_b,4,4 (a),Explain AVL tree rotations (LL RR LR RL) with examples.,,,,
+set_b_b,4,4 (b),"Construct a heap from the sequence: 40 20 30 35 25 80 32 and explain heap sort.",,,,
+set_b_b,5,5 (a),Explain Dijkstra's shortest path algorithm with an example graph.,,,,
+set_b_b,5,5 (b),Explain Prim's algorithm for minimum spanning tree with an example.,,,,
+
+# ── Set C ─────────────────────────────────────────────────────────────────────
+set_c_a,1,Define Big-O notation and give an example.,,,,,,
+set_c_a,2,What is postfix notation? Give one example.,,,,,,
+set_c_a,3,Define sentinel node in a linked list.,,,,,,
+set_c_a,4,What is a threaded binary tree?,,,,,,
+set_c_a,5,Define adjacency matrix and adjacency list.,,,,,,
+set_c_a,6,What is open hashing?,,,,,,
+set_c_a,7,Define red-black tree.,,,,,,
+set_c_a,8,What is a multiqueue?,,,,,,
+set_c_a,9,Define mutual recursion.,,,,,,
+set_c_a,10,State the difference between tree and graph.,,,,,,
+
+set_c_b,1,1 (a),"Explain Tower of Hanoi problem. Write a recursive algorithm and trace for n = 3.",,,,
+set_c_b,1,1 (b),"Explain the evaluation of a postfix expression using a stack. Trace: 5 3 2 * + 8 -",,,,
+set_c_b,2,2 (a),Explain the implementation of a priority queue using a heap.,,,,
+set_c_b,2,2 (b),Write an algorithm for a queue using a circular array with front and rear pointers.,,,,
+set_c_b,3,3 (a),Explain polynomial representation using a linked list and write an algorithm for addition.,,,,
+set_c_b,3,3 (b),Write an algorithm for merging two sorted linked lists into a single sorted list.,,,,
+set_c_b,4,4 (a),Explain B-tree insertion with an example of order 5.,,,,
+set_c_b,4,4 (b),Explain postorder and levelorder traversals of a binary tree with examples.,,,,
+set_c_b,5,5 (a),Explain Floyd-Warshall algorithm for all-pairs shortest path with an example.,,,,
+set_c_b,5,5 (b),Explain Kruskal's algorithm for minimum spanning tree with an example.,,,,

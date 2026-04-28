@@ -1,0 +1,69 @@
+# AMET Graded Assessment — Sample CSV
+# Columns: section, f1, f2, f3, f4, f5, f6, f7
+# Lines starting with # are ignored.
+#
+# CONFIG rows:  section=config,   f1=key,   f2=value
+# INSTRUCTION:  section=instruction, f1=text
+# PART A rows:  section=part_a,   f1=number, f2=text, f3=mark, f4=btl, f5=co
+# PART B rows:  section=part_b,   f1=pair,   f2=option(a/b), f3=number, f4=text, f5=mark, f6=btl, f7=co
+# PART C rows:  section=part_c,   f1=number, f2=text, f3=mark, f4=btl, f5=co
+
+section,f1,f2,f3,f4,f5,f6,f7
+
+# ── Config ───────────────────────────────────────────────────────────────────
+config,exam_type,MODEL EXAMINATIONS – APRIL 2026,,,,,
+config,programme,B.Tech SE/CSE,,,,,
+config,semester,II,,,,,
+config,course_name,Communicative English Advanced,,,,,
+config,course_code,256EN1A22TD,,,,,
+config,duration,3 hours,,,,,
+config,max_marks,100,,,,,
+config,part_a_total,20×1 = 20 Marks,,,,,
+config,part_a_instruction,Answer all the questions,,,,,
+config,part_b_total,5×14 = 70 Marks,,,,,
+config,part_b_instruction,Answer all the questions,,,,,
+config,part_c_total,1×10 = 10 Marks,,,,,
+config,part_c_instruction,Answer the Question,,,,,
+
+# ── Instructions ──────────────────────────────────────────────────────────────
+instruction,Before attempting any question paper ensure that you have received the correct question paper.,,,,,,
+instruction,The missing data if any may be assumed suitably.,,,,,,
+instruction,Use sketches wherever necessary.,,,,,,
+instruction,Use of dictionary / data book is NOT permitted.,,,,,,
+
+# ── Part A — 20 MCQ (1 mark each) ────────────────────────────────────────────
+part_a,1,Choose the correct option that completes the sentence: She ______ to the market every day.,1,K2,CO1,,
+part_a,2,Identify the word most similar in meaning to 'Eloquent'.,1,K2,CO1,,
+part_a,3,Choose the option that best completes the blank: He is neither honest ______ hardworking.,1,K2,CO2,,
+part_a,4,Identify the word opposite in meaning to 'Benevolent'.,1,K2,CO2,,
+part_a,5,Identify the word opposite in meaning to 'Verbose'.,1,K2,CO2,,
+part_a,6,Complete the pair: Light : Dark :: Joy : ______,1,K2,CO3,,
+part_a,7,Identify the word opposite in meaning to 'Diligent'.,1,K2,CO3,,
+part_a,8,Choose the correct option: The committee ______ its decision yesterday.,1,K2,CO3,,
+part_a,9,Identify the word opposite in meaning to 'Transparent'.,1,K2,CO4,,
+part_a,10,Complete the analogy: Diplomatic : Tact :: Courageous : ______,1,K2,CO4,,
+part_a,11,Identify the word most similar in meaning to 'Ambiguous'.,1,K2,CO4,,
+part_a,12,Arrange the following sentences in a logical order to form a coherent paragraph.,1,K2,CO4,,
+part_a,13,Choose the correct option: The team ______ working on the project since morning.,1,K2,CO5,,
+part_a,14,Identify the word most similar in meaning to 'Pragmatic'.,1,K2,CO5,,
+part_a,15,Choose the correctly rearranged sentence from the options given below.,1,K2,CO5,,
+part_a,16,After reviewing the feedback from external evaluators the board ______ its curriculum.,1,K3,CO5,,
+part_a,17,Choose the correct past perfect form of the verb in the sentence.,1,K3,CO5,,
+part_a,18,Identify the word opposite in meaning to 'Candid'.,1,K2,CO1,,
+part_a,19,Choose the correct form of sentence from the given alternatives.,1,K4,CO1,,
+part_a,20,Identify the word most similar in meaning to 'Meticulous'.,1,K2,CO2,,
+
+# ── Part B — 5 pairs (14 marks each) — f1=pair f2=option f3=number f4=text f5=mark f6=btl f7=co
+part_b,1,a,21 (a),Write a paragraph of 200 words on: 'The role of communication in professional success'.,14,K6,CO1
+part_b,1,b,21 (b),Write a paragraph of 200 words describing the importance of teamwork in engineering.,14,K6,CO1
+part_b,2,a,22 (a),Write a paragraph on: 'Advantages of digital communication in maritime industry'. (150-180 words),14,K6,CO2
+part_b,2,b,22 (b),Write a paragraph on: 'Safety protocols in modern shipping'. (170-200 words),14,K6,CO2
+part_b,3,a,23 (a),Write a dialogue of about 200 words between two colleagues discussing a project deadline.,14,K6,CO3
+part_b,3,b,23 (b),Describe in 200 words the environmental impact of oil spills and measures to prevent them.,14,K6,CO3
+part_b,4,a,24 (a),Write a paragraph on: 'Leadership qualities required for a ship captain'. (170-200 words),14,K6,CO4
+part_b,4,b,24 (b),Write a Q&A dialogue of 200 words between an interviewer and a fresh marine engineering graduate.,14,K6,CO4
+part_b,5,a,25 (a),Write a detailed paragraph on: 'Future of autonomous ships in global trade'. (170-200 words),14,K6,CO5
+part_b,5,b,25 (b),Write a story in 170-200 words illustrating effective crisis communication on board a vessel.,14,K6,CO5
+
+# ── Part C — 1 case study (10 marks) ─────────────────────────────────────────
+part_c,26,"Captain Arjun is the master of a cargo vessel. During a voyage a minor fire breaks out. (a) What communication strategies should he employ? (4M) (b) How should the incident be documented? (3M) (c) What lessons can be drawn for future crisis management? (3M)",10,K3-K5,CO5,,
