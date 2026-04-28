@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "skills": {
+    "gws-docs": {
+      "source": "googleworkspace/cli",
+      "ref": "main",
+      "sourceType": "github",
+      "computedHash": "3d307f7d0c8aac69ef0f852a665df4312d981e9e56dbbc559327df91f8012b38"
+    },
+    "gws-docs-write": {
+      "source": "googleworkspace/cli",
+      "ref": "main",
+      "sourceType": "github",
+      "computedHash": "a5d9b287951c0758759cb8ce03c5d1b7234da607d774ebc878aa3afadc4b72d9"
+    },
+    "gws-shared": {
+      "source": "googleworkspace/cli",
+      "ref": "main",
+      "sourceType": "github",
+      "computedHash": "da1efa9a68aca4faa72795fb3d785a04465b2ca9c12c936fee66be812d2a5cf1"
+    },
+    "gws-sheets-read": {
+      "source": "googleworkspace/cli",
+      "ref": "main",
+      "sourceType": "github",
+      "computedHash": "aca4344d53da37b2e88751f2901210b7a6fe83b5b15841f886e32c80c7672ec3"
+    }
+  }
+}
